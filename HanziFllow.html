@@ -33,11 +33,75 @@
             height: 100% !important;
             width: 100% !important;
             margin: 0 !important;
-            padding: 12px !important;
+            padding: 8px !important;
         }
         body.popup-mode #slideshow-grid-container {
             border-width: 2px !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        /* Responsive HanziWriter SVG Scaling */
+        [id^="character-target-div-"], [id^="slideshow-target-div-"] {
+            width: 100% !important;
+            height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        [id^="character-target-div-"] svg, [id^="slideshow-target-div-"] svg {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Dynamic Grid box sizing using viewport dimensions */
+        .char-count-1 [id^="canvas-box-"], .char-count-1 [id^="slideshow-box-"] {
+            width: min(65vw, 42vh) !important;
+            height: min(65vw, 42vh) !important;
+            max-width: 320px !important;
+            max-height: 320px !important;
+            min-width: 100px !important;
+            min-height: 100px !important;
+        }
+        .char-count-2 [id^="canvas-box-"], .char-count-2 [id^="slideshow-box-"] {
+            width: min(42vw, 28vh) !important;
+            height: min(42vw, 28vh) !important;
+            max-width: 180px !important;
+            max-height: 180px !important;
+            min-width: 70px !important;
+            min-height: 70px !important;
+        }
+        .char-count-3 [id^="canvas-box-"], .char-count-3 [id^="slideshow-box-"] {
+            width: min(28vw, 19vh) !important;
+            height: min(28vw, 19vh) !important;
+            max-width: 120px !important;
+            max-height: 120px !important;
+            min-width: 50px !important;
+            min-height: 50px !important;
+        }
+
+        /* Text and card responsiveness in popup mode */
+        body.popup-mode #slide-pinyin {
+            font-size: clamp(0.75rem, 3vh, 1.25rem) !important;
+            padding: 0.25rem 0.75rem !important;
+        }
+        body.popup-mode #slide-hanviet {
+            font-size: clamp(1rem, 4vh, 1.75rem) !important;
+            margin-top: 0.25rem !important;
+        }
+        body.popup-mode #slide-meaning {
+            font-size: clamp(0.75rem, 2.5vh, 1rem) !important;
+            padding: 0.5rem !important;
+        }
+        body.popup-mode .rounded-3xl {
+            padding: clamp(8px, 3vh, 24px) !important;
+            gap: clamp(8px, 2.5vh, 20px) !important;
+        }
+        body.popup-mode #tab-slideshow-view button {
+            padding-top: clamp(0.25rem, 1.5vh, 0.75rem) !important;
+            padding-bottom: clamp(0.25rem, 1.5vh, 0.75rem) !important;
+            padding-left: clamp(0.5rem, 2vw, 1.25rem) !important;
+            padding-right: clamp(0.5rem, 2vw, 1.25rem) !important;
+            font-size: clamp(0.7rem, 2vh, 0.9rem) !important;
         }
     </style>
     <style>
@@ -1302,10 +1366,11 @@
                 drawSize = 100;
             }
 
-            // Create the joint grid container
+            // Create the joint grid container with responsive char count classes
             const gridContainer = document.createElement('div');
             gridContainer.id = 'canvas-grid-container';
-            gridContainer.className = 'flex items-center justify-center bg-white border-2 border-red-400/80 rounded-2xl shadow-md overflow-hidden';
+            const countClass = charCount === 1 ? 'char-count-1' : (charCount === 2 ? 'char-count-2' : 'char-count-3');
+            gridContainer.className = `flex items-center justify-center bg-white border-2 border-red-400/80 rounded-2xl shadow-md overflow-hidden ${countClass}`;
             container.appendChild(gridContainer);
 
             for (let i = 0; i < charCount; i++) {
@@ -1671,10 +1736,11 @@
                 drawSize = 100;
             }
 
-            // Create the joint grid container
+            // Create the joint grid container with responsive char count classes
             const gridContainer = document.createElement('div');
             gridContainer.id = 'slideshow-grid-container';
-            gridContainer.className = 'flex items-center justify-center bg-white border-2 border-red-400/80 rounded-2xl shadow-md overflow-hidden';
+            const countClass = charCount === 1 ? 'char-count-1' : (charCount === 2 ? 'char-count-2' : 'char-count-3');
+            gridContainer.className = `flex items-center justify-center bg-white border-2 border-red-400/80 rounded-2xl shadow-md overflow-hidden ${countClass}`;
             container.appendChild(gridContainer);
 
             for (let i = 0; i < charCount; i++) {
@@ -1724,10 +1790,10 @@
             });
         }
 
+        // Loop animation
         function playAutoLoopAnimation(index = 0) {
             if (state.slideshowWriters.length === 0 || !state.isSlideshowPlaying) return;
             if (index >= state.slideshowWriters.length) {
-                // Done animating all characters in this word, wait 2 seconds then restart from 0
                 stopSlideshowLoop();
                 state.slideshowTimeout = setTimeout(() => {
                     if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
@@ -1753,7 +1819,7 @@
                         if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
                             playAutoLoopAnimation(index + 1);
                         }
-                    }, 2000); // Wait exactly 2 seconds between characters
+                    }, 2000);
                 }
             });
         }
@@ -1777,7 +1843,6 @@
                     height: 550
                 });
 
-                // Copy all styles to PiP window
                 [...document.styleSheets].forEach((styleSheet) => {
                     try {
                         const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
@@ -1825,15 +1890,11 @@
                 `;
                 pipWindow.document.head.appendChild(customStyle);
 
-                // Get player container
                 const playerContainer = document.querySelector('#tab-slideshow-view > section.lg\\:col-span-8 > div.rounded-3xl');
-                
-                // Placeholder in main document
                 const placeholder = document.createElement('div');
                 placeholder.id = 'pip-placeholder';
                 playerContainer.parentNode.insertBefore(placeholder, playerContainer);
 
-                // Hide the top index bar in PiP
                 const topBar = playerContainer.querySelector('.flex.justify-between.items-center');
                 let originalTopBarDisplay = '';
                 if (topBar) {
@@ -1841,7 +1902,6 @@
                     topBar.style.display = 'none';
                 }
 
-                // Append player to PiP body
                 pipWindow.document.body.appendChild(playerContainer);
 
                 pipWindow.addEventListener('pagehide', () => {
@@ -1900,7 +1960,6 @@
                 if (topBar) topBar.style.setProperty('display', 'none', 'important');
             }
 
-            // Hide the footer in popup mode
             const footer = document.querySelector('footer');
             if (footer) footer.style.setProperty('display', 'none', 'important');
 
