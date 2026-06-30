@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Pháp Điện Tử - Học & Trình Chiếu Chữ Hán</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for premium look -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Hanzi Writer CDN for Stroke Animations & Quizzes -->
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+    <!-- HSK 3.0 Level 1 Vocabulary Database -->
+    <script src="hsk1_data.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfbf7;
+        }
+        .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f0ea;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c2c0b4;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a69a;
+        }
+    </style>
+</head>
+<body class="text-stone-800 min-h-screen flex flex-col">
+
+    <!-- HEADER BAR -->
+    <header class="border-b border-stone-200/80 bg-white/75 backdrop-blur-md sticky top-0 z-30 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-800 flex items-center justify-center text-white text-xl font-bold shadow-sm shadow-amber-800/30">
+                    筆
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-stone-900 flex items-center gap-2">
+                        Thư Pháp Điện Tử <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-semibold">Hanzi Pro</span>
+                    </h1>
+                    <p class="text-xs text-stone-500">Nền tảng học viết và trình chiếu từ vựng chữ Hán chuyên sâu</p>
+                </div>
+            </div>
+            
+            <!-- TABS SWITCHER -->
+            <div class="flex bg-stone-100 p-1 rounded-xl border border-stone-200">
+                <button id="tab-btn-practice" class="px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-amber-900 shadow-sm">
+                    ✍️ Tập Luyện Viết
+                </button>
+                <button id="tab-btn-slideshow" class="px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-stone-600 hover:text-stone-900">
+                    📺 Trình Chiếu Từ Vựng
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- ================= TAB 1: PRACTICE & QUIZ INTERFACE ================= -->
+        <div id="tab-practice-view" class="grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300">
+            
+                        <section class="lg:col-span-3 space-y-4 order-2 lg:order-1">
+                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-stone-100">
+                        <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-800">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                            Từ Vựng HSK 1
+                        </h2>
+                    </div>
+
+                    <!-- HSK 1 Category Filter -->
+                    <div class="space-y-1.5">
+                        <label for="category-select" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Chủ đề học tập</label>
+                        <select id="category-select" class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-stone-50 text-xs font-bold text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700/50">
+                            <!-- Categories will be rendered here dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Category Progress Bar -->
+                    <div id="category-progress-container" class="bg-stone-50 p-3 rounded-xl border border-stone-200/50 space-y-1.5">
+                        <div class="flex justify-between text-[10px] font-bold text-stone-500">
+                            <span>Tiến độ chủ đề:</span>
+                            <span id="category-progress-text" class="text-emerald-700 font-bold">0 / 0 (0%)</span>
+                        </div>
+                        <div class="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
+                            <div id="category-progress-bar" class="bg-emerald-600 h-1.5 transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons for active category -->
+                    <div>
+                        <button id="btn-add-category-slideshow" class="w-full py-2 bg-amber-800/10 hover:bg-amber-800/20 text-amber-900 border border-amber-800/20 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                            📺 Nạp chủ đề vào Trình chiếu
+                        </button>
+                    </div>
+                    
+                    <div class="max-h-[300px] overflow-y-auto pr-1">
+                        <div class="grid grid-cols-2 gap-2" id="preset-container">
+                            <!-- Preset Cards will be generated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Guidelines / Legend -->
+                    <div class="pt-3 border-t border-stone-100 space-y-2">
+                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Quy tắc bút thuận cơ bản</h3>
+                        <ul class="text-[10px] text-stone-600 space-y-1">
+                            <li class="flex gap-1.5">
+                                <span class="text-amber-700 font-bold">1.</span> Ngang trước, dọc sau (Như chữ 十).
+                            </li>
+                            <li class="flex gap-1.5">
+                                <span class="text-amber-700 font-bold">2.</span> Phẩy trước, mác sau (Như chữ 人).
+                            </li>
+                            <li class="flex gap-1.5">
+                                <span class="text-amber-700 font-bold">3.</span> Trên trước dưới sau; Trái trước phải sau.
+                            </li>
+                            <li class="flex gap-1.5">
+                                <span class="text-amber-700 font-bold">4.</span> Ngoài trước trong sau; Vào trước đóng sau.
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Reset Progress button -->
+                    <div class="pt-3 border-t border-stone-100 text-center">
+                        <button id="btn-reset-history" class="text-[10px] text-stone-400 hover:text-red-600 transition-colors font-medium">
+                            🔄 Xóa tiến trình học tập
+                        </button>
+                    </div>
+                </div>
+            </section>
+<!-- CENTER PANEL: WRITING CANVAS & CONTROLS (6 cols on desktop) -->
+            <section class="lg:col-span-6 space-y-4 order-1 lg:order-2">
+                <!-- Search bar inside practice tab -->
+                <div class="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-sm flex flex-col sm:flex-row gap-3 items-center">
+                    <span class="text-xs font-bold text-stone-500 whitespace-nowrap">Tra cứu & Luyện chữ:</span>
+                    <form id="search-form" class="relative w-full">
+                        <input type="text" id="char-input" placeholder="Nhập một hoặc nhiều chữ Hán để luyện viết..." 
+                               class="w-full pl-4 pr-10 py-2 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-700/50 focus:border-amber-700 bg-stone-50/50 text-sm transition-all"
+                               maxlength="20">
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-amber-800 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.604 10.604z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Dynamic word character tabs (if user typed multiple chars) -->
+                <div id="word-tabs-container" class="hidden bg-stone-100 p-1.5 rounded-xl flex-wrap gap-1 items-center justify-center">
+                    <!-- Character tabs will appear here dynamically -->
+                </div>
+
+                <div class="bg-[#fcfaf2] rounded-2xl border border-stone-200 shadow-md p-6 flex flex-col items-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 0), radial-gradient(#000 1px, transparent 0); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
+                    
+                    <div class="w-full flex justify-between items-center mb-4 z-10">
+                        <div>
+                            <span id="char-badge" class="text-xs font-medium bg-amber-800 text-[#fcfbf7] px-2.5 py-1 rounded-full uppercase tracking-wider">Đang luyện</span>
+                        </div>
+                        <button id="toggle-grid" class="p-2 rounded-lg bg-stone-200/60 hover:bg-stone-200 text-stone-700 text-xs font-semibold flex items-center gap-1.5 transition-colors" title="Bật/Tắt Lưới">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                            </svg>
+                            <span>Lưới Mễ Tự</span>
+                        </button>
+                    </div>
+
+                                        <!-- Canvas Loading Overlay -->
+                    <div id="canvas-loader" class="absolute inset-0 bg-[#fcfaf2]/95 z-20 flex flex-col items-center justify-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+                        <div class="w-10 h-10 border-4 border-stone-200 border-t-amber-800 rounded-full animate-spin"></div>
+                        <p class="text-sm font-medium text-stone-600">Đang tải nét vẽ...</p>
+                    </div>
+
+                    <!-- CANVAS WRAPPER CONTAINER -->
+                    <div id="canvas-wrapper-container" class="w-full flex flex-wrap gap-4 items-center justify-center min-h-[320px] py-2 relative z-10">
+                        <!-- Canvas boxes will be generated dynamically here -->
+                    </div>
+<!-- MODE SELECTORS -->
+                    <div class="w-full grid grid-cols-2 gap-2 mt-6 z-10">
+                        <button id="mode-animate" class="py-2.5 px-4 rounded-xl font-semibold text-sm transition-all shadow-sm flex items-center justify-center gap-2 bg-amber-800 text-white border border-amber-900">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                            </svg>
+                            Xem Nét Vẽ
+                        </button>
+                        <button id="mode-quiz" class="py-2.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-stone-200 hover:bg-stone-300 text-stone-800 border border-stone-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                            </svg>
+                            Tự Tập Viết
+                        </button>
+                    </div>
+
+                    <!-- CONTROL PANEL -->
+                    <div class="w-full mt-4 bg-stone-100 rounded-xl p-4 space-y-4 z-10 border border-stone-200/55">
+                        <div id="animate-controls" class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-1">
+                                <button id="btn-play" class="p-2.5 rounded-lg bg-white border border-stone-200 hover:bg-amber-50 hover:text-amber-800 text-stone-700 transition-colors shadow-sm" title="Chạy vẽ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                                    </svg>
+                                </button>
+                                <button id="btn-pause" class="p-2.5 rounded-lg bg-white border border-stone-200 hover:bg-amber-50 hover:text-amber-800 text-stone-700 transition-colors shadow-sm" title="Tạm dừng">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                                    </svg>
+                                </button>
+                                <button id="btn-restart" class="p-2.5 rounded-lg bg-white border border-stone-200 hover:bg-amber-50 hover:text-amber-800 text-stone-700 transition-colors shadow-sm" title="Khởi động lại">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-1 bg-white rounded-lg border border-stone-200 p-0.5 shadow-sm">
+                                <button id="btn-prev-stroke" class="px-2.5 py-1.5 rounded text-xs font-semibold hover:bg-stone-100 text-stone-700 transition-colors">Lùi 1 Nét</button>
+                                <span class="text-xs text-stone-400 font-bold px-1">|</span>
+                                <button id="btn-next-stroke" class="px-2.5 py-1.5 rounded text-xs font-semibold hover:bg-stone-100 text-stone-700 transition-colors">Tiến 1 Nét</button>
+                            </div>
+                        </div>
+
+                        <div id="quiz-controls" class="hidden flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="text-xs font-medium text-stone-600">Hãy di chuyển chuột/tay viết đúng thứ tự nét nhé!</span>
+                            </div>
+                            <button id="btn-quiz-undo" class="px-3 py-1.5 bg-white border border-stone-200 rounded-lg hover:bg-red-50 hover:text-red-800 text-stone-700 text-xs font-semibold transition-colors shadow-sm flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                                </svg>
+                                Viết Lại Nét Cũ
+                            </button>
+                        </div>
+
+                        <div class="pt-3 border-t border-stone-200/60 flex flex-col sm:flex-row justify-between gap-4">
+                            <div class="flex items-center gap-2 flex-grow">
+                                <label for="speed-range" class="text-xs font-semibold text-stone-500 whitespace-nowrap">Tốc độ vẽ:</label>
+                                <input type="range" id="speed-range" min="0.5" max="3" step="0.5" value="1.5" class="w-full h-1.5 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-amber-800">
+                                <span id="speed-val" class="text-xs font-bold text-amber-800 w-8 text-right">1.5x</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="toggle-outline" class="sr-only peer" checked>
+                                    <div class="w-9 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:width-4 after:transition-all peer-checked:bg-amber-800"></div>
+                                    <span class="ml-2 text-xs font-semibold text-stone-600">Hiện nét mờ</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUCCESS TOAST IN CANVAS -->
+                    <div id="toast-message" class="absolute bottom-4 left-4 right-4 bg-emerald-900/95 text-white py-3 px-4 rounded-xl shadow-lg border border-emerald-500/30 flex items-center gap-3 transition-transform duration-300 translate-y-24 opacity-0 pointer-events-none z-30">
+                        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.74-5.24z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-emerald-300">Hoàn thành tuyệt vời!</h4>
+                            <p class="text-[11px] text-stone-100">Bạn đã viết chính xác thứ tự nét vẽ.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT PANEL: DICTIONARY & STROKE BREAKDOWN (3 cols on desktop) -->
+            <section class="lg:col-span-3 space-y-4 order-3">
+                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm space-y-4">
+                    <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-800">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.063 1.06l-.041.02-.041-.02a.75.75 0 11-1.063-1.06l.041-.02zm0 0V9m-3 8.25h6" />
+                        </svg>
+                        Thông Tin Chữ Hán
+                    </h2>
+
+                    <div class="flex items-center gap-4 bg-stone-50 p-4 rounded-xl border border-stone-200/60">
+                        <div id="dict-char" class="text-5xl font-semibold serif-font text-stone-900 bg-white w-16 h-16 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm">
+                            永
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-bold text-stone-400">Pinyin:</span>
+                                <span id="dict-pinyin" class="text-sm font-bold text-amber-950">yǒng</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-bold text-stone-400">Hán Việt:</span>
+                                <span id="dict-hanviet" class="text-sm font-bold text-stone-800 uppercase">Vĩnh</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-bold text-stone-400">Số nét:</span>
+                                <span id="dict-stroke-count" class="text-sm font-bold text-emerald-800">5 nét</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <span class="text-xs font-bold text-stone-400 uppercase tracking-wider">Định nghĩa & Ý nghĩa</span>
+                        <p id="dict-meaning" class="text-sm text-stone-600 leading-relaxed">
+                            Mãi mãi, vĩnh viễn, trường tồn. Chữ "Vĩnh" (永) rất nổi tiếng trong thư pháp Trung Hoa vì cấu tạo của nó chứa đủ 8 nét cơ bản của chữ Hán.
+                        </p>
+                    </div>
+
+                    <div id="custom-char-notice" class="hidden text-xs bg-amber-50 text-amber-800 border border-amber-200/60 p-3 rounded-xl leading-relaxed">
+                        <strong>Thông báo:</strong> Bạn đang xem chữ tự nhập. Chúng tôi vẫn phân tích và hiển thị thứ tự nét chính xác!
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ================= TAB 2: SLIDESHOW & PREVIEW INTERFACE ================= -->
+        <div id="tab-slideshow-view" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300">
+            
+            <!-- LEFT PANEL: PLAYLIST CONTROLLER & ORDERING (4 cols on desktop) -->
+            <section class="lg:col-span-4 space-y-4">
+                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-800">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                            </svg>
+                            Danh Sách Trình Chiếu
+                        </h2>
+                        <span id="slideshow-total" class="text-xs font-semibold bg-stone-100 text-stone-600 px-2.5 py-1 rounded-md">8 từ</span>
+                    </div>
+
+                    <!-- Quick Load Dropdown -->
+                    <div class="space-y-1.5">
+                        <label for="playlist-load-select" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Nạp nhanh từ vựng HSK 1</label>
+                        <select id="playlist-load-select" class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-stone-50 text-xs font-bold text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700/50">
+                            <option value="">-- Chọn chủ đề để nạp --</option>
+                            <option value="all">Toàn bộ HSK 1 (506 từ)</option>
+                            <!-- HSK 1 categories will be populated by JS -->
+                        </select>
+                    </div>
+
+                    <!-- Sorting & Play Order Toggle -->
+                    <div class="bg-stone-50 rounded-xl p-3 border border-stone-200/60 flex items-center justify-between">
+                        <span class="text-xs font-bold text-stone-500">Thứ tự phát:</span>
+                        <div class="flex bg-white rounded-lg p-0.5 border border-stone-200 shadow-sm text-xs">
+                            <button id="btn-order-seq" class="px-3 py-1 rounded-md font-semibold transition-all bg-amber-800 text-white">
+                                Tuần tự
+                            </button>
+                            <button id="btn-order-random" class="px-3 py-1 rounded-md font-semibold transition-all text-stone-600 hover:text-stone-900">
+                                Ngẫu nhiên
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Active Playlist Container -->
+                    <div id="playlist-container" class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                        <!-- Playlist items with sort buttons will render here -->
+                    </div>
+
+                    <!-- Add New Character to Playlist -->
+                    <div class="pt-4 border-t border-stone-100 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold uppercase text-stone-400 tracking-wider">Thêm từ tùy chọn</h3>
+                            <button id="btn-playlist-clear" class="text-[10px] text-red-500 hover:text-red-700 font-bold transition-colors">
+                                🗑️ Xóa hết danh sách
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2">
+                                <input type="text" id="add-input-char" placeholder="Chữ (VD: 好)" class="col-span-1 px-3 py-2 text-xs border border-stone-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-800" maxlength="1">
+                                <input type="text" id="add-input-pinyin" placeholder="Pinyin (hǎo)" class="col-span-2 px-3 py-2 text-xs border border-stone-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-800">
+                            </div>
+                            <input type="text" id="add-input-meaning" placeholder="Định nghĩa / Ý nghĩa..." class="w-full px-3 py-2 text-xs border border-stone-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-800">
+                            <button id="btn-playlist-add" class="w-full py-2 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                Thêm Vào Danh Sách Chiếu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            
+</section>
+
+            <!-- CENTER WORKSPACE: AUTO-DRAW CALLIGRAPHY BOX (8 cols on desktop) -->
+            <section class="lg:col-span-8 flex flex-col items-center justify-center space-y-6">
+                
+                <div class="w-full bg-[#fcfaf2] rounded-3xl border border-stone-200/80 p-8 shadow-md flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 0), radial-gradient(#000 1px, transparent 0); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
+                    
+                    <!-- Top Index indicator & auto status -->
+                    <div class="w-full flex justify-between items-center mb-4 z-10">
+                        <span id="slideshow-index-indicator" class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-3 py-1 rounded-full">Từ 1 / 8</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="inline-flex w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+                            <span class="text-xs font-semibold text-stone-500">Tự động lặp lại (2 giây)</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIDESHOW CANVAS INNER FRAME -->
+                    <div class="relative w-80 h-80 bg-white rounded-2xl shadow-md border-2 border-stone-300 flex items-center justify-center overflow-hidden z-10">
+                        <!-- Mễ Tự Lưới -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100">
+                            <line x1="50" y1="0" x2="50" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
+                            <line x1="0" y1="50" x2="100" y2="50" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
+                            <line x1="0" y1="0" x2="100" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
+                            <line x1="100" y1="0" x2="0" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
+                            <rect x="0.5" y="0.5" width="99" height="99" fill="none" stroke="#f87171" stroke-width="1" />
+                        </svg>
+
+                        <!-- Canvas Loader Slideshow -->
+                        <div id="slideshow-loader" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+                            <div class="w-10 h-10 border-4 border-stone-200 border-t-amber-800 rounded-full animate-spin"></div>
+                            <p class="text-sm font-medium text-stone-600">Đang chuẩn bị vẽ...</p>
+                        </div>
+
+                        <!-- Target element for slideshow writer -->
+                        <div id="slideshow-target-div" class="w-full h-full flex items-center justify-center"></div>
+                    </div>
+
+                    <!-- DIRECT PINYIN & DEFINITION CARDS BELOW CANVAS -->
+                    <div class="w-full max-w-lg mt-6 text-center space-y-3 z-10">
+                        <div class="space-y-1">
+                            <div class="inline-block px-4 py-1.5 bg-amber-800 text-stone-50 font-bold tracking-widest text-lg rounded-xl shadow-sm shadow-amber-800/20" id="slide-pinyin">
+                                yǒng
+                            </div>
+                            <h2 class="text-xl font-bold text-stone-900 serif-font" id="slide-hanviet">VĨNH</h2>
+                        </div>
+                        
+                        <div class="bg-white/80 backdrop-blur-sm border border-stone-200/60 p-4 rounded-xl shadow-sm">
+                            <p id="slide-meaning" class="text-sm text-stone-600 leading-relaxed font-medium">
+                                Mãi mãi, vĩnh viễn, trường tồn. Chữ "Vĩnh" (永) chứa đủ 8 nét cơ bản của chữ Hán.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- NAVIGATION CONTROLLER BAR -->
+                    <div class="w-full max-w-sm mt-6 flex justify-between items-center gap-3 z-10">
+                        <button id="btn-slide-prev" class="p-3 bg-stone-200 hover:bg-stone-300 active:bg-stone-400 text-stone-800 rounded-xl transition-all shadow-sm flex items-center gap-1 text-xs font-bold">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                            Trước
+                        </button>
+
+                        <button id="btn-slide-pause" class="py-3 px-6 bg-amber-800 hover:bg-amber-900 text-white rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 text-xs font-bold flex-grow">
+                            <svg id="slide-pause-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                            </svg>
+                            <span id="slide-pause-text">Tạm dừng Trình chiếu</span>
+                        </button>
+
+                        <button id="btn-slide-next" class="p-3 bg-stone-200 hover:bg-stone-300 active:bg-stone-400 text-stone-800 rounded-xl transition-all shadow-sm flex items-center gap-1 text-xs font-bold">
+                            Sau
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-stone-200 bg-white py-6 mt-12 text-center text-xs text-stone-400">
+        <p class="max-w-2xl mx-auto px-4 leading-relaxed">
+            Công cụ hỗ trợ học trực tuyến. Dữ liệu nét vẽ chữ được phát triển dựa trên chuẩn Hanzi Writer mã nguồn mở.<br>
+            © 2026 Thư Pháp Điện Tử. Phát triển cho trải nghiệm học tập đỉnh cao.
+        </p>
+    </footer>
+
+    <!-- ERROR NOTIFICATION MODAL -->
+    <div id="error-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full border border-stone-200 shadow-xl space-y-4">
+            <div class="w-12 h-12 bg-red-100 text-red-700 rounded-full flex items-center justify-center text-xl mx-auto">⚠️</div>
+            <div class="text-center space-y-1">
+                <h3 class="text-base font-bold text-stone-900">Thông báo</h3>
+                <p id="error-modal-msg" class="text-xs text-stone-500 leading-relaxed">Chữ này hiện chưa được hỗ trợ nét vẽ.</p>
+            </div>
+            <div>
+                <button id="close-error-modal" class="w-full py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-bold rounded-xl transition-colors">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        // Core local dictionary data (fallback/custom presets)
+        const PRESET_DB = {
+            '永': { pinyin: 'yǒng', hanviet: 'Vĩnh', meaning: 'Mãi mãi, vĩnh viễn, trường tồn. Chữ chứa đủ 8 nét cơ bản của chữ Hán (Vĩnh Tự Bát Pháp).' },
+            '福': { pinyin: 'fú', hanviet: 'Phúc', meaning: 'May mắn, hạnh phúc, tốt lành. Thường treo ngược (Phúc đáo) trong ngày Tết để cầu phúc lành.' },
+            '愛': { pinyin: 'ài', hanviet: 'Ái', meaning: 'Yêu thương, tình yêu (Chữ Phồn thể). Cấu tạo chứa bộ Tâm (心 - trái tim) ở giữa thể hiện tình yêu từ lòng.' },
+            '爱': { pinyin: 'ài', hanviet: 'Ái', meaning: 'Yêu thương, tình yêu (Chữ Giản thể). Được tối giản từ chữ Phồn thể giúp viết nhanh hơn.' },
+            '学': { pinyin: 'xué', hanviet: 'Học', meaning: 'Học hỏi, học tập, nghiên cứu kiến thức mới. Biểu tượng của tinh thần hiếu học truyền thức.' },
+            '美': { pinyin: 'měi', hanviet: 'Mỹ', meaning: 'Vẻ đẹp, hoàn mỹ, tốt đẹp. Kết hợp bởi chữ Dương (羊 - dê) và chữ Đại (Dạ - lớn).' },
+            '德': { pinyin: 'dé', hanviet: 'Đức', meaning: 'Đạo đức, đức độ, phẩm hạnh cao đẹp. Biểu trưng cho sự rèn luyện lối sống thanh tao.' },
+            '龙': { pinyin: 'lóng', hanviet: 'Long', meaning: 'Con rồng (Chữ Giản thể). Biểu tượng sức mạnh tối thượng, may mắn và thịnh vượng bền lâu.' }
+        };
+
+        const fallbackHanViet = {
+            '爱': 'Ái', '好': 'Hảo', '八': 'Bát', '爸': 'Ba', '吧': 'Ba', '白': 'Bạch', '天': 'Thiên', '百': 'Bách',
+            '班': 'Ban', '半': 'Bán', '年': 'Niên', '帮': 'Bang', '忙': 'Mang', '包': 'Bao', '子': 'Tử', '杯': 'Bôi',
+            '北': 'Bắc', '边': 'Biên', '京': 'Kinh', '本': 'Bản', '比': 'Tỉ', '别': 'Biệt', 'sự': 'Sự', '人': 'Nhân',
+            '病': 'Bệnh', '不': 'Bất', '大': 'Đại', '对': 'Đối', '客': 'Khách', '气': 'Khí', '用': 'Dụng', '菜': 'Thái',
+            '茶': 'Trà', '差': 'Sai', '常': 'Thường', '唱': 'Xướng', '歌': 'Ca', '车': 'Xa', '票': 'Phiếu', '上': 'Thượng',
+            '站': 'Trạm', '吃': 'Ngật', '饭': 'Phạn', '出': 'Xuất', '来': 'Lai', '去': 'Khứ', '穿': 'Xuyên', '床': 'Sàng',
+            '次': 'Thứ', '从': 'Tòng', '错': 'Thác', '打': 'Đả', '话': 'Thoại', '开': 'Khai', '球': 'Cầu', '学': 'Học',
+            '生': 'Sinh', '到': 'Đáo', '地': 'Địa', '点': 'Điểm', '方': 'Phương', '图': 'Đồ', '得': 'Đắc', '等': 'Đẳng',
+            '弟': 'Đệ', '第': 'Đệ', '二': 'Nhị', '电': 'Điện', '脑': 'Não', '视': 'Thị', '机': 'Cơ', '影': 'Ảnh',
+            '院': 'Viện', '东': 'Đông', '西': 'Tây', '动': 'Động', '作': 'Tác', '都': 'Đô', '读': 'Độc', '书': 'Thư',
+            '饿': 'Ngạ', '儿': 'Nhi', '店': 'Điếm', '房': 'Phòng', '间': 'Gian', '放': 'Phóng', '假': 'Giả', '飞': 'Phi',
+            '非': 'Phi', '风': 'Phong', '干': 'Can', '净': 'Tịnh', '什': 'Thập', '么': 'Ma', '高': 'Cao', '兴': 'Hứng',
+            '诉': 'Tố', '哥': 'Ca', '个': 'Cá', '给': 'Cấp', '跟': 'Cân', '工': 'Công', '关': 'Quan', '贵': 'Quý',
+            '国': 'Quốc', '家': 'Gia', '外': 'Ngoại', '过': 'Quá', '还': 'Hoàn', '是': 'Thị', '有': 'Hữu', '孩': 'Hài',
+            '汉': 'Hán', '语': 'Ngữ', '字': 'Tự', '吃': 'Ngật', '看': 'Khán', '听': 'Thính', '玩': 'Ngoạn', '号': 'Hiệu',
+            '喝': 'Hát', '和': 'Hòa', '很': 'Hận', 'hậu': 'Hậu', '花': 'Hoa', '坏': 'Hoại', '欢': 'Hoan', '迎': 'Nghênh',
+            '回': 'Hồi', '答': 'Đáp', '会': 'Hội', '火': 'Hỏa', '机': 'Cơ', '场': 'Trường', '蛋': 'Đản', '吉': 'Cát',
+            '林': 'Lâm', '级': 'Cấp', '几': 'Kỷ', '里': 'Lý', '见': 'Kiến', '面': 'Diện', '江': 'Giang', '教': 'Giáo',
+            '叫': 'Khiếu', '姐': 'Tỷ', '介': 'Giới', 'sao': 'Sao', '今': 'Kim', '进': 'Tiến', '九': 'Cửu', '就': 'Tựu',
+            '觉': 'Giác', '玩': 'Ngoạn', '笑': 'Tiếu', '考': 'Khảo', 'thi': 'Thí', '渴': 'Khát', '課': 'Khóa', '口': 'Khẩu',
+            '块': 'Khối', '快': 'Khoái', '乐': 'Lạc', '老': 'Lão', '师': 'Sư', '了': 'Liễu', '累': 'Lụy', '冷': 'Lãnh',
+            '两': 'Lưỡng', '零': 'Linh', '六': 'Lục', '路': 'Lộ', '绿': 'Lục', '妈': 'Ma', '马': 'Mã', '买': 'Mua',
+            '卖': 'Bán', '慢': 'Mạn', '忙': 'Mang', '吗': 'Ma', '没': 'Một', '系': 'Hệ', '有': 'Hữu', '妹': 'Muội',
+            '门': 'Môn', '米': 'Mễ', '面': 'Diện', '条': 'Điều', '名': 'Danh', '明': 'Minh', '拿': 'Nã', '哪': 'Nả',
+            '那': 'Na', '奶': 'Nãi', '南': 'Nam', '男': 'Nam', '呢': 'Ni', '能': 'Năng', '你': 'Nhĩ', '您': 'Nẫm',
+            '鸟': 'Điểu', '牛': 'Ngưu', '女': 'Nữ', '旁': 'Bàng', '胖': 'Bàn', '跑': 'Tảo', '步': 'Bộ', '朋': 'Bằng',
+            '友': 'Hữu', '便': 'Tiện', '宜': 'Nghi', '票': 'Phiếu', '苹': 'Bình', '果': 'Quả', '七': 'Thất', '钱': 'Tiền',
+            '前': 'Tiền', '晴': 'Tình', '请': 'Thỉnh', '问': 'Vấn', '去': 'Khứ', '让': 'Nhượng', '热': 'Nhiệt',
+            '认': 'Nhận', '识': 'Thức', 'chân': 'Chân', '日': 'Nhật', '肉': 'Nhục', '三': 'Tam', '山': 'Sơn', '商': 'Thương',
+            '午': 'Ngọ', '少': 'Thiểu', '谁': 'Thùy', '身': 'Thân', '体': 'Thể', '什': 'Thập', 'mẹ': 'Mẹ', 'bệnh': 'Bệnh',
+            '音': 'Âm', '十': 'Thập', '候': 'Hầu', '时': 'Thời', '事': 'Sự', '情': 'Tình', '手': 'Thủ', '表': 'Biểu',
+            '树': 'Thụ', '双': 'Song', '水': 'Thủy', '睡': 'Thụy', '说': 'Thuyết', '四': 'Tứ', '送': 'Tống', 'tổi': 'Tuổi',
+            '他': 'Tha', '她': 'Tha', '太': 'Thái', 'Khí': 'Khí', '同': 'Đồng', 'đồ': 'Đồ', 'quán': 'Quán', '往': 'Vãng',
+            'đề': 'Đề', '我': 'Ngã', '五': 'Ngũ', '西': 'Tây', '洗': 'Tẩy', '喜': 'Hỷ', '下': 'Hạ', '夏': 'Hạ',
+            '先': 'Tiên', '现': 'Hiện', '想': 'Tưởng', '小': 'Tiểu', 'tỷ': 'Tỷ', 'hiệu': 'Hiệu', 'kỳ': 'Kỳ', '星': 'Tinh',
+            '写': 'Tả', 'tạ': 'Tạ', '新': 'Tân', '行': 'Hành', '姓': 'Tánh', 'hứng': 'Hứng', 'hứa': 'Hứa', '牙': 'Nha',
+            'loát': 'Loát', '眼': 'Nhãn', 'tình': 'Tình', '羊': 'Dương', 'dược': 'Dược', 'yêu': 'Yêu', 'Dã': 'Dã', '頁': 'Diệp',
+            '一': 'Nhất', 'tá': 'Tá', 'khởi': 'Khởi', 'định': 'Định', 'cộng': 'Cộng', 'dạng': 'Dạng', 'trực': 'Trực', 'y': 'Y',
+            'y': 'Y', 'phục': 'Phục', 'ghế': 'Ghế', '阴': 'Âm', 'âm': 'Âm', 'nhạc': 'Nhạc', 'nhân': 'Nhân', 'vị': 'Vị',
+            '在': 'Tại', '再': 'Tái', '早': 'Tảo', 'chẩm': 'Chẩm', 'dạng': 'Dạng', 'trạm': 'Trạm', 'trương': 'Trương', 'thảo': 'Thảo',
+            '这': 'Giá', 'trước': 'Trước', 'chính': 'Chính', 'tri': 'Tri', '中': 'Trung', 'trọng': 'Trọng', 'tô': 'Tô', 'trú': 'Trú',
+            'chuẩn': 'Chuẩn', 'bị': 'Bị', 'trác': 'Trác', 'tẩu': 'Tẩu', 'tối': 'Tối', 'tạc': 'Tạc', 'tả': 'Tả', 'tố': 'Tố',
+            'tác': 'Tác', 'tác': 'Tác', 'tọa': 'Tọa', 'tọa': 'Tọa'
+        };
+
+        function getSinoVietnameseCharFallback(c) {
+            return fallbackHanViet[c] || c;
+        }
+
+        // Playlist state for slideshow tab
+        let playlist = [];
+
+        // App States
+        const state = {
+            currentTab: 'practice', // 'practice' or 'slideshow'
+            
+            // Practice State
+            activeChar: '永',
+            activeMode: 'animate',
+            writerInstances: [], // Array of HanziWriter instances for side-by-side rendering
+            isGridVisible: true,
+            isOutlineVisible: true,
+            drawSpeed: 1.5,
+            currentSentenceChars: ['永'],
+            activeSentenceIndex: 0,
+            activeCategory: 'Chào hỏi & Cảm xúc',
+            learnedWords: [], // list of learned characters stored in localStorage
+            activeQuizIndex: 0, // active character index in writing quiz sequence
+
+            // Slideshow State
+            slideIndex: 0,
+            slideSubIndex: 0, // Current character index inside compound words during slideshow
+            slideshowWriter: null,
+            slideshowTimeout: null,
+            isSlideshowPlaying: true,
+            slideshowOrder: 'seq' // 'seq' (sequential) or 'random'
+        };
+
+        // Declaring all DOM Elements globally
+        let tabBtnPractice, tabBtnSlideshow, tabPracticeView, tabSlideshowView;
+        let canvasLoader, modeAnimateBtn, modeQuizBtn, animateControls, quizControls;
+        let btnPlay, btnPause, btnRestart, btnPrevStroke, btnNextStroke, btnQuizUndo;
+        let speedRange, speedVal, toggleOutline, toggleGridBtn;
+        let searchForm, charInput, wordTabsContainer;
+        let dictChar, dictPinyin, dictHanviet, dictStrokeCount, dictMeaning, customCharNotice;
+        let errorModal, errorModalMsg, closeErrorModal, toastMessage;
+        let slideshowTargetDiv, slideshowLoader, slidePinyin, slideHanviet, slideMeaning;
+        let btnSlidePrev, btnSlidePause, btnSlideNext, slidePauseIcon, slidePauseText;
+        let btnOrderSeq, btnOrderRandom, slideshowIndexIndicator, slideshowTotal;
+        let addInputChar, addInputPinyin, addInputMeaning, btnPlaylistAdd, playlistContainer;
+        
+        // HSK 1 custom elements
+        let categorySelect, categoryProgressText, categoryProgressBar, btnAddCategorySlideshow, btnResetHistory, btnPlaylistClear;
+        let playlistLoadSelect;
+
+        // Unified Initialization Function
+        function initApp() {
+            tabBtnPractice = document.getElementById('tab-btn-practice');
+            tabBtnSlideshow = document.getElementById('tab-btn-slideshow');
+            tabPracticeView = document.getElementById('tab-practice-view');
+            tabSlideshowView = document.getElementById('tab-slideshow-view');
+            
+            canvasLoader = document.getElementById('canvas-loader');
+            modeAnimateBtn = document.getElementById('mode-animate');
+            modeQuizBtn = document.getElementById('mode-quiz');
+            animateControls = document.getElementById('animate-controls');
+            quizControls = document.getElementById('quiz-controls');
+            
+            btnPlay = document.getElementById('btn-play');
+            btnPause = document.getElementById('btn-pause');
+            btnRestart = document.getElementById('btn-restart');
+            btnPrevStroke = document.getElementById('btn-prev-stroke');
+            btnNextStroke = document.getElementById('btn-next-stroke');
+            btnQuizUndo = document.getElementById('btn-quiz-undo');
+            
+            speedRange = document.getElementById('speed-range');
+            speedVal = document.getElementById('speed-val');
+            toggleOutline = document.getElementById('toggle-outline');
+            toggleGridBtn = document.getElementById('toggle-grid');
+            
+            searchForm = document.getElementById('search-form');
+            charInput = document.getElementById('char-input');
+            wordTabsContainer = document.getElementById('word-tabs-container');
+            
+            dictChar = document.getElementById('dict-char');
+            dictPinyin = document.getElementById('dict-pinyin');
+            dictHanviet = document.getElementById('dict-hanviet');
+            dictStrokeCount = document.getElementById('dict-stroke-count');
+            dictMeaning = document.getElementById('dict-meaning');
+            customCharNotice = document.getElementById('custom-char-notice');
+            
+            errorModal = document.getElementById('error-modal');
+            errorModalMsg = document.getElementById('error-modal-msg');
+            closeErrorModal = document.getElementById('close-error-modal');
+            toastMessage = document.getElementById('toast-message');
+
+            slideshowTargetDiv = document.getElementById('slideshow-target-div');
+            slideshowLoader = document.getElementById('slideshow-loader');
+            slidePinyin = document.getElementById('slide-pinyin');
+            slideHanviet = document.getElementById('slide-hanviet');
+            slideMeaning = document.getElementById('slide-meaning');
+            
+            btnSlidePrev = document.getElementById('btn-slide-prev');
+            btnSlidePause = document.getElementById('btn-slide-pause');
+            btnSlideNext = document.getElementById('btn-slide-next');
+            slidePauseIcon = document.getElementById('slide-pause-icon');
+            slidePauseText = document.getElementById('slide-pause-text');
+            
+            btnOrderSeq = document.getElementById('btn-order-seq');
+            btnOrderRandom = document.getElementById('btn-order-random');
+            slideshowIndexIndicator = document.getElementById('slideshow-index-indicator');
+            slideshowTotal = document.getElementById('slideshow-total');
+            
+            addInputChar = document.getElementById('add-input-char');
+            addInputPinyin = document.getElementById('add-input-pinyin');
+            addInputMeaning = document.getElementById('add-input-meaning');
+            btnPlaylistAdd = document.getElementById('btn-playlist-add');
+            playlistContainer = document.getElementById('playlist-container');
+
+            // HSK 1 mapping
+            categorySelect = document.getElementById('category-select');
+            categoryProgressText = document.getElementById('category-progress-text');
+            categoryProgressBar = document.getElementById('category-progress-bar');
+            btnAddCategorySlideshow = document.getElementById('btn-add-category-slideshow');
+            btnResetHistory = document.getElementById('btn-reset-history');
+            btnPlaylistClear = document.getElementById('btn-playlist-clear');
+            playlistLoadSelect = document.getElementById('playlist-load-select');
+
+            // Load learned history
+            state.learnedWords = JSON.parse(localStorage.getItem('learned_words') || '[]');
+
+            // Load playlist
+            const savedPlaylist = localStorage.getItem('slideshow_playlist');
+            if (savedPlaylist) {
+                playlist = JSON.parse(savedPlaylist);
+            } else {
+                // Initialize default playlist with some HSK 1 words
+                const defaultWords = (window.HSK1_DB || []).slice(0, 8);
+                playlist = defaultWords.map(w => ({
+                    char: w.char,
+                    pinyin: w.pinyin,
+                    hanviet: w.hanviet,
+                    meaning: w.meaning
+                }));
+            }
+
+            // Populate and render HSK 1 dropdown and grid
+            if (window.HSK1_DB) {
+                populateCategoryDropdown();
+                renderActiveCategoryWords();
+                updateCategoryProgress();
+                populatePlaylistLoadDropdown();
+            }
+
+            initHanziWriter(state.activeChar);
+            setupEventListeners();
+            renderPlaylistUI();
+        }
+
+        // Safe loader logic
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initApp();
+        } else {
+            document.addEventListener('DOMContentLoaded', initApp);
+        }
+
+        // Tab Switching Logic
+        function switchTab(targetTab) {
+            if (state.currentTab === targetTab) return;
+            state.currentTab = targetTab;
+
+            if (targetTab === 'practice') {
+                tabBtnPractice.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-amber-900 shadow-sm";
+                tabBtnSlideshow.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-stone-600 hover:text-stone-900";
+                
+                tabPracticeView.classList.remove('hidden');
+                tabSlideshowView.classList.add('hidden');
+
+                stopSlideshowLoop();
+                
+                setTimeout(() => {
+                    initHanziWriter(state.activeChar);
+                }, 100);
+            } else {
+                tabBtnSlideshow.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-amber-900 shadow-sm";
+                tabBtnPractice.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-stone-600 hover:text-stone-900";
+                
+                tabSlideshowView.classList.remove('hidden');
+                tabPracticeView.classList.add('hidden');
+
+                initSlideshowPlayer();
+            }
+        }
+
+        // ================= TAB 1: PRACTICE LOGIC =================
+        function setupEventListeners() {
+            // Tab switcher
+            tabBtnPractice.addEventListener('click', () => switchTab('practice'));
+            tabBtnSlideshow.addEventListener('click', () => switchTab('slideshow'));
+
+            // Mode Selectors
+            modeAnimateBtn.addEventListener('click', () => switchPracticeMode('animate'));
+            modeQuizBtn.addEventListener('click', () => switchPracticeMode('quiz'));
+
+            btnPlay.addEventListener('click', () => { animateSequence(0); });
+            btnPause.addEventListener('click', () => { state.writerInstances.forEach(w => w.pauseAnimation()); });
+            btnRestart.addEventListener('click', () => {
+                state.writerInstances.forEach(w => {
+                    w.cancelQuiz();
+                    w.showCharacter();
+                });
+                animateSequence(0);
+            });
+
+            btnPrevStroke.addEventListener('click', () => {
+                state.writerInstances.forEach(w => {
+                    w.pauseAnimation();
+                    w.showCharacter();
+                });
+            });
+            btnNextStroke.addEventListener('click', () => {
+                state.writerInstances.forEach(w => w.animateStroke(0));
+            });
+
+            btnQuizUndo.addEventListener('click', () => {
+                if (state.activeMode === 'quiz') {
+                    startQuizSequence(state.activeQuizIndex);
+                }
+            });
+
+            toggleGridBtn.addEventListener('click', () => {
+                state.isGridVisible = !state.isGridVisible;
+                const grids = document.querySelectorAll('.writing-grid');
+                grids.forEach(grid => {
+                    if (state.isGridVisible) {
+                        grid.classList.remove('opacity-0');
+                    } else {
+                        grid.classList.add('opacity-0');
+                    }
+                });
+                if (state.isGridVisible) {
+                    toggleGridBtn.classList.add('bg-stone-200');
+                } else {
+                    toggleGridBtn.classList.remove('bg-stone-200');
+                }
+            });
+
+            toggleOutline.addEventListener('change', (e) => {
+                state.isOutlineVisible = e.target.checked;
+                state.writerInstances.forEach(w => {
+                    if (state.isOutlineVisible) w.showOutline();
+                    else w.hideOutline();
+                });
+            });
+
+            speedRange.addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value);
+                state.drawSpeed = val;
+                speedVal.textContent = val.toFixed(1) + 'x';
+                state.writerInstances.forEach(w => {
+                    w.updateColorAndSize('strokeAnimationSpeed', val);
+                });
+            });
+
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleSearch();
+            });
+
+            closeErrorModal.addEventListener('click', () => { errorModal.classList.add('hidden'); });
+
+            // SLIDESHOW BTNS
+            btnSlidePrev.addEventListener('click', () => playSlideOffset(-1));
+            btnSlideNext.addEventListener('click', () => playSlideOffset(1));
+            btnSlidePause.addEventListener('click', toggleSlideshowPause);
+
+            btnOrderSeq.addEventListener('click', () => switchOrderMode('seq'));
+            btnOrderRandom.addEventListener('click', () => switchOrderMode('random'));
+
+            btnPlaylistAdd.addEventListener('click', addNewCharacterToPlaylist);
+
+            // HSK 1 UI Bindings
+            if (categorySelect) {
+                categorySelect.addEventListener('change', (e) => {
+                    state.activeCategory = e.target.value;
+                    renderActiveCategoryWords();
+                    updateCategoryProgress();
+                });
+            }
+
+            if (btnAddCategorySlideshow) {
+                btnAddCategorySlideshow.addEventListener('click', () => {
+                    const categoryWords = window.HSK1_DB.filter(w => w.category === state.activeCategory);
+                    if (categoryWords.length === 0) return;
+                    
+                    playlist = categoryWords.map(w => ({
+                        char: w.char,
+                        pinyin: w.pinyin,
+                        hanviet: w.hanviet,
+                        meaning: w.meaning
+                    }));
+                    state.slideIndex = 0;
+                    state.slideSubIndex = 0;
+                    localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+                    renderPlaylistUI();
+                    showToast("Đã nạp trình chiếu!", `Nạp thành công ${playlist.length} từ của chủ đề "${state.activeCategory}".`);
+                    switchTab('slideshow');
+                });
+            }
+
+            if (btnResetHistory) {
+                btnResetHistory.addEventListener('click', resetLearningHistory);
+            }
+
+            if (btnPlaylistClear) {
+                btnPlaylistClear.addEventListener('click', () => {
+                    if (playlist.length === 0) return;
+                    if (confirm("Bạn có chắc chắn muốn xóa toàn bộ danh sách trình chiếu không?")) {
+                        playlist = [];
+                        state.slideIndex = 0;
+                        state.slideSubIndex = 0;
+                        localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+                        renderPlaylistUI();
+                        stopSlideshowLoop();
+                        if (state.slideshowWriter) {
+                            state.slideshowWriter.cancelQuiz();
+                        }
+                        slideshowTargetDiv.innerHTML = '<p class="text-stone-400 text-sm font-medium">Danh sách trống. Vui lòng thêm từ!</p>';
+                        slidePinyin.textContent = '-';
+                        slideHanviet.textContent = '-';
+                        slideMeaning.textContent = 'Hãy thêm từ vựng vào danh sách trình chiếu để bắt đầu.';
+                        slideshowIndexIndicator.textContent = 'Ký tự 0 / 0';
+                        showToast("Đã xóa danh sách", "Đã xóa toàn bộ từ trong danh sách trình chiếu.");
+                    }
+                });
+            }
+
+            if (playlistLoadSelect) {
+                playlistLoadSelect.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    if (!val) return;
+                    
+                    if (val === 'all') {
+                        playlist = window.HSK1_DB.map(w => ({
+                            char: w.char,
+                            pinyin: w.pinyin,
+                            hanviet: w.hanviet,
+                            meaning: w.meaning
+                        }));
+                        showToast("Đã nạp toàn bộ", `Đã nạp toàn bộ ${playlist.length} từ HSK 1 vào danh sách trình chiếu.`);
+                    } else {
+                        const categoryWords = window.HSK1_DB.filter(w => w.category === val);
+                        playlist = categoryWords.map(w => ({
+                            char: w.char,
+                            pinyin: w.pinyin,
+                            hanviet: w.hanviet,
+                            meaning: w.meaning
+                        }));
+                        showToast("Đã nạp chủ đề", `Đã nạp ${playlist.length} từ của chủ đề "${val}" vào danh sách trình chiếu.`);
+                    }
+                    
+                    state.slideIndex = 0;
+                    state.slideSubIndex = 0;
+                    localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+                    renderPlaylistUI();
+                    initSlideshowPlayer();
+                    
+                    playlistLoadSelect.value = ''; // Reset select box
+                });
+            }
+        }
+
+        // HSK 1 Helpers
+        function populateCategoryDropdown() {
+            if (!categorySelect) return;
+            categorySelect.innerHTML = '';
+            const categories = [...new Set(window.HSK1_DB.map(w => w.category))].filter(Boolean);
+            
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                categorySelect.appendChild(opt);
+            });
+
+            if (categories.includes('Chào hỏi & Cảm xúc')) {
+                state.activeCategory = 'Chào hỏi & Cảm xúc';
+                categorySelect.value = 'Chào hỏi & Cảm xúc';
+            } else if (categories.length > 0) {
+                state.activeCategory = categories[0];
+                categorySelect.value = categories[0];
+            }
+        }
+
+        function populatePlaylistLoadDropdown() {
+            if (!playlistLoadSelect) return;
+            // Clear items except the first two (default options)
+            playlistLoadSelect.innerHTML = `
+                <option value="">-- Chọn chủ đề để nạp --</option>
+                <option value="all">Toàn bộ HSK 1 (506 từ)</option>
+            `;
+            const categories = [...new Set(window.HSK1_DB.map(w => w.category))].filter(Boolean);
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                playlistLoadSelect.appendChild(opt);
+            });
+        }
+
+        function renderActiveCategoryWords() {
+            const container = document.getElementById('preset-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const categoryWords = window.HSK1_DB.filter(w => w.category === state.activeCategory);
+            
+            categoryWords.forEach(item => {
+                const char = item.char;
+                const isLearned = Array.from(char).every(c => state.learnedWords.includes(c));
+                const card = document.createElement('button');
+                
+                card.className = `relative bg-stone-50 hover:bg-amber-50 active:bg-amber-100 border rounded-xl p-2.5 text-left transition-all hover:shadow-sm flex items-center gap-2.5 ${
+                    isLearned ? 'border-emerald-300 bg-emerald-50/20' : 'border-stone-200'
+                }`;
+                card.title = `${char} [${item.pinyin}] - ${item.hanviet}: ${item.meaning}`;
+                
+                card.onclick = () => {
+                    charInput.value = '';
+                    wordTabsContainer.classList.add('hidden');
+                    loadCharacter(char);
+                };
+
+                card.innerHTML = `
+                    <div class="text-xl font-bold serif-font text-stone-900 bg-white w-9 h-9 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm flex-shrink-0">
+                        ${char}
+                    </div>
+                    <div class="overflow-hidden min-w-0 flex-grow">
+                        <h4 class="text-xs font-bold text-stone-800 flex items-center gap-1 justify-between">
+                            <span class="truncate">${item.hanviet}</span>
+                            ${isLearned ? '<span class="text-emerald-600 font-bold text-[10px]" title="Đã học">✓</span>' : ''}
+                        </h4>
+                        <p class="text-[9px] text-stone-400 truncate">${item.pinyin}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateCategoryProgress() {
+            if (!categoryProgressText || !categoryProgressBar) return;
+            const categoryWords = window.HSK1_DB.filter(w => w.category === state.activeCategory);
+            const total = categoryWords.length;
+            if (total === 0) return;
+            
+            const learnedInCat = categoryWords.filter(item => {
+                return Array.from(item.char).every(c => state.learnedWords.includes(c));
+            }).length;
+            
+            const percentage = Math.round((learnedInCat / total) * 100);
+            
+            categoryProgressText.textContent = `${learnedInCat} / ${total} (${percentage}%)`;
+            categoryProgressBar.style.width = `${percentage}%`;
+        }
+
+        function markWordAsLearned(word) {
+            Array.from(word).forEach(c => {
+                if (!state.learnedWords.includes(c)) {
+                    state.learnedWords.push(c);
+                }
+            });
+            localStorage.setItem('learned_words', JSON.stringify(state.learnedWords));
+            renderActiveCategoryWords();
+            updateCategoryProgress();
+        }
+
+        function resetLearningHistory() {
+            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ tiến trình học tập không?")) {
+                state.learnedWords = [];
+                localStorage.removeItem('learned_words');
+                renderActiveCategoryWords();
+                updateCategoryProgress();
+                showToast("Lịch sử đã xóa", "Tiến độ học tập đã được thiết lập lại từ đầu.");
+            }
+        }
+
+        function handleSearch() {
+            const val = charInput.value.trim();
+            if (!val) return;
+
+            const cleanChars = Array.from(val).filter(char => {
+                const code = char.charCodeAt(0);
+                return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF);
+            });
+
+            if (cleanChars.length === 0) {
+                showError("Vui lòng nhập ít nhất một chữ Hán hợp lệ!");
+                return;
+            }
+
+            const limitedChars = cleanChars.slice(0, 4);
+
+            wordTabsContainer.classList.add('hidden');
+            loadCharacter(limitedChars.join(''));
+        }
+
+        function showLoading(isLoading) {
+            if (isLoading) {
+                canvasLoader.classList.remove('opacity-0', 'pointer-events-none');
+                canvasLoader.classList.add('opacity-100');
+            } else {
+                canvasLoader.classList.add('opacity-0', 'pointer-events-none');
+                canvasLoader.classList.remove('opacity-100');
+            }
+        }
+
+        function showError(msg) {
+            errorModalMsg.textContent = msg;
+            errorModal.classList.remove('hidden');
+        }
+
+        function switchPracticeMode(newMode) {
+            state.activeMode = newMode;
+            if (newMode === 'animate') {
+                modeAnimateBtn.className = "py-2.5 px-4 rounded-xl font-semibold text-sm transition-all shadow-sm flex items-center justify-center gap-2 bg-amber-800 text-white border border-amber-900";
+                modeQuizBtn.className = "py-2.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-stone-200 hover:bg-stone-300 text-stone-800 border border-stone-300";
+                animateControls.classList.remove('hidden');
+                quizControls.classList.add('hidden');
+                
+                state.writerInstances.forEach(w => {
+                    w.cancelQuiz();
+                    w.showCharacter();
+                });
+                animateSequence(0);
+            } else {
+                modeQuizBtn.className = "py-2.5 px-4 rounded-xl font-semibold text-sm transition-all shadow-sm flex items-center justify-center gap-2 bg-amber-800 text-white border border-amber-900";
+                modeAnimateBtn.className = "py-2.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-stone-200 hover:bg-stone-300 text-stone-800 border border-stone-300";
+                animateControls.classList.add('hidden');
+                quizControls.classList.remove('hidden');
+                
+                startQuizSequence(0);
+            }
+        }
+
+        function animateSequence(index = 0) {
+            if (state.activeMode !== 'animate') return;
+            if (index >= state.writerInstances.length) return;
+            
+            state.writerInstances[index].animateCharacter({
+                onComplete: () => {
+                    setTimeout(() => {
+                        animateSequence(index + 1);
+                    }, 350);
+                }
+            });
+        }
+
+        function startQuizSequence(index = 0) {
+            state.activeQuizIndex = index;
+
+            for (let i = 0; i < state.writerInstances.length; i++) {
+                const box = document.getElementById(`canvas-box-${i}`);
+                if (box) {
+                    if (i === index) {
+                        box.classList.remove('border-stone-300', 'border-emerald-500');
+                        box.classList.add('border-amber-500', 'ring-2', 'ring-amber-500/20');
+                    } else if (i < index) {
+                        box.classList.remove('border-stone-300', 'border-amber-500', 'ring-2', 'ring-amber-500/20');
+                        box.classList.add('border-emerald-500');
+                    } else {
+                        box.classList.remove('border-amber-500', 'border-emerald-500', 'ring-2', 'ring-amber-500/20');
+                        box.classList.add('border-stone-300');
+                    }
+                }
+            }
+
+            if (index >= state.writerInstances.length) {
+                showToast("Hoàn thành tuyệt vời!", `Bạn đã viết chính xác từ "${state.activeChar}".`);
+                markWordAsLearned(state.activeChar);
+                setTimeout(() => {
+                    startQuizSequence(0);
+                }, 2500);
+                return;
+            }
+
+            state.writerInstances[index].cancelQuiz();
+            state.writerInstances[index].quiz({
+                onComplete: () => {
+                    const box = document.getElementById(`canvas-box-${index}`);
+                    if (box) {
+                        box.classList.remove('border-amber-500', 'ring-2', 'ring-amber-500/20');
+                        box.classList.add('border-emerald-500');
+                    }
+                    setTimeout(() => {
+                        startQuizSequence(index + 1);
+                    }, 400);
+                }
+            });
+        }
+
+        function showToast(title, desc, isSuccess = true) {
+            if (isSuccess) {
+                toastMessage.className = "absolute bottom-4 left-4 right-4 bg-emerald-900/95 text-white py-3 px-4 rounded-xl shadow-lg border border-emerald-500/30 flex items-center gap-3 transition-transform duration-300 translate-y-24 opacity-0 pointer-events-none z-30";
+            } else {
+                toastMessage.className = "absolute bottom-4 left-4 right-4 bg-amber-900/95 text-white py-3 px-4 rounded-xl shadow-lg border border-amber-500/30 flex items-center gap-3 transition-transform duration-300 translate-y-24 opacity-0 pointer-events-none z-30";
+            }
+            
+            const iconColor = isSuccess ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400";
+            const iconSvg = isSuccess 
+                ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.74-5.24z" clip-rule="evenodd" /></svg>`
+                : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.753-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>`;
+            
+            toastMessage.innerHTML = `
+                <div class="w-6 h-6 rounded-full ${iconColor} flex items-center justify-center">
+                    ${iconSvg}
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white">${title}</h4>
+                    <p class="text-[11px] text-stone-100">${desc}</p>
+                </div>
+            `;
+            
+            toastMessage.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            toastMessage.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toastMessage.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+                toastMessage.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        function initHanziWriter(word, lookupWord) {
+            showLoading(true);
+            const container = document.getElementById('canvas-wrapper-container');
+            if (!container) return;
+            container.innerHTML = '';
+            state.writerInstances = [];
+
+            const charCount = word.length;
+            let sizeClass = 'w-72 h-72 sm:w-80 sm:h-80';
+            let drawSize = 280;
+            
+            if (charCount === 2) {
+                sizeClass = 'w-40 h-40 sm:w-48 sm:h-48';
+                drawSize = 160;
+            } else if (charCount >= 3) {
+                sizeClass = 'w-24 h-24 sm:w-32 sm:h-32';
+                drawSize = 100;
+            }
+
+            for (let i = 0; i < charCount; i++) {
+                const box = document.createElement('div');
+                box.id = `canvas-box-${i}`;
+                box.className = `relative ${sizeClass} bg-white rounded-2xl shadow-inner border-2 border-stone-300 flex items-center justify-center overflow-hidden z-10 transition-all duration-300`;
+                
+                box.innerHTML = `
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none writing-grid ${state.isGridVisible ? '' : 'opacity-0'} transition-opacity duration-300" viewBox="0 0 100 100">
+                        <line x1="50" y1="0" x2="50" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
+                        <line x1="0" y1="50" x2="100" y2="50" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
+                        <line x1="0" y1="0" x2="100" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
+                        <line x1="100" y1="0" x2="0" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
+                        <rect x="0.5" y="0.5" width="99" height="99" fill="none" stroke="#f87171" stroke-width="1" />
+                    </svg>
+                    <div id="character-target-div-${i}" class="w-full h-full flex items-center justify-center cursor-pointer"></div>
+                `;
+                container.appendChild(box);
+
+                const writer = HanziWriter.create(`character-target-div-${i}`, word[i], {
+                    width: drawSize,
+                    height: drawSize,
+                    padding: charCount === 1 ? 15 : 10,
+                    showOutline: state.isOutlineVisible,
+                    strokeAnimationSpeed: state.drawSpeed,
+                    delayBetweenStrokes: 350,
+                    strokeColor: '#1c1917',
+                    outlineColor: '#e7e5e4',
+                    drawingColor: '#c2410c',
+                    drawingWidth: charCount === 1 ? 20 : (charCount === 2 ? 14 : 10),
+                    showCharacter: true
+                });
+                state.writerInstances.push(writer);
+            }
+
+            updateDictionaryView(lookupWord || word);
+
+            const promises = state.writerInstances.map(w => w.loadingPromise || Promise.resolve());
+            Promise.all(promises).then(() => {
+                showLoading(false);
+                if (state.activeMode === 'animate') {
+                    animateSequence(0);
+                } else {
+                    startQuizSequence(0);
+                }
+            }).catch(() => {
+                showLoading(false);
+                showError("Không thể tải nét vẽ cho chữ này. Thử ký tự khác!");
+            });
+        }
+
+        function loadCharacter(character) {
+            state.activeChar = character;
+            initHanziWriter(character);
+        }
+
+        function updateDictionaryView(character) {
+            dictChar.textContent = character;
+            
+            const hsk1Item = (window.HSK1_DB || []).find(w => w.char === character);
+
+            if (hsk1Item) {
+                dictPinyin.textContent = hsk1Item.pinyin;
+                dictHanviet.textContent = hsk1Item.hanviet;
+                dictMeaning.textContent = hsk1Item.meaning;
+                customCharNotice.classList.add('hidden');
+                
+                let totalStrokes = 0;
+                const promises = state.writerInstances.map(w => {
+                    const loadPromise = w.loadingPromise || Promise.resolve();
+                    return loadPromise.then(() => {
+                        const data = w.getStrokeData();
+                        if (data) totalStrokes += data.length;
+                    });
+                });
+                
+                Promise.all(promises).then(() => {
+                    dictStrokeCount.textContent = totalStrokes ? totalStrokes + ' nét' : 'N/A';
+                }).catch(() => {
+                    dictStrokeCount.textContent = 'N/A';
+                });
+            } else if (PRESET_DB[character]) {
+                const info = PRESET_DB[character];
+                dictPinyin.textContent = info.pinyin;
+                dictHanviet.textContent = info.hanviet;
+                dictStrokeCount.textContent = info.strokes || 'N/A';
+                dictMeaning.textContent = info.meaning;
+                customCharNotice.classList.add('hidden');
+            } else {
+                dictPinyin.textContent = 'Chữ tự do...';
+                
+                let combinedHV = [];
+                for (let c of character) {
+                    combinedHV.push(getSinoVietnameseCharFallback(c));
+                }
+                dictHanviet.textContent = combinedHV.join(' ').toUpperCase();
+                
+                let totalStrokes = 0;
+                const promises = state.writerInstances.map(w => {
+                    const loadPromise = w.loadingPromise || Promise.resolve();
+                    return loadPromise.then(() => {
+                        const data = w.getStrokeData();
+                        if (data) totalStrokes += data.length;
+                    });
+                });
+                
+                Promise.all(promises).then(() => {
+                    dictStrokeCount.textContent = totalStrokes ? totalStrokes + ' nét' : 'N/A';
+                }).catch(() => {
+                    dictStrokeCount.textContent = 'N/A';
+                });
+                
+                dictMeaning.textContent = 'Ký tự được thêm thủ công ngoài cơ sở dữ liệu mẫu. Hoạt họa thứ tự nét vẫn chạy tốt!';
+                customCharNotice.classList.remove('hidden');
+            }
+        }
+
+        // ================= TAB 2: SLIDESHOW =================
+        function renderPlaylistUI() {
+            if (!playlistContainer) return;
+            playlistContainer.innerHTML = '';
+            slideshowTotal.textContent = `${playlist.length} từ`;
+
+            playlist.forEach((item, index) => {
+                const activeHighlight = index === state.slideIndex;
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between p-2.5 rounded-xl border text-left transition-all ${
+                    activeHighlight 
+                    ? 'bg-amber-50 border-amber-300 ring-1 ring-amber-300' 
+                    : 'bg-stone-50 border-stone-200'
+                }`;
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden flex-grow cursor-pointer" onclick="jumpToSlide(${index})">
+                        <span class="text-xl font-bold serif-font text-stone-900 bg-white w-8 h-8 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm flex-shrink-0">
+                            ${item.char}
+                        </span>
+                        <div class="overflow-hidden min-w-0 flex-grow">
+                            <h4 class="text-xs font-bold text-stone-800 flex items-center gap-1">
+                                ${item.hanviet} <span class="text-[10px] text-amber-800 font-normal">(${item.pinyin})</span>
+                            </h4>
+                            <p class="text-[10px] text-stone-400 truncate">${item.meaning}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-1 flex-shrink-0 pl-1">
+                        <button onclick="movePlaylistItem(${index}, -1)" class="p-1 hover:bg-stone-200 rounded text-stone-500 hover:text-stone-800" title="Đẩy lên">
+                            ▲
+                        </button>
+                        <button onclick="movePlaylistItem(${index}, 1)" class="p-1 hover:bg-stone-200 rounded text-stone-500 hover:text-stone-800" title="Đẩy xuống">
+                            ▼
+                        </button>
+                        <button onclick="removePlaylistItem(${index})" class="p-1 hover:bg-red-100 rounded text-stone-400 hover:text-red-700" title="Xóa khỏi list">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                playlistContainer.appendChild(div);
+            });
+        }
+
+        function movePlaylistItem(idx, direction) {
+            const targetIdx = idx + direction;
+            if (targetIdx < 0 || targetIdx >= playlist.length) return;
+
+            const temp = playlist[idx];
+            playlist[idx] = playlist[targetIdx];
+            playlist[targetIdx] = temp;
+
+            if (state.slideIndex === idx) {
+                state.slideIndex = targetIdx;
+            } else if (state.slideIndex === targetIdx) {
+                state.slideIndex = idx;
+            }
+
+            localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+            renderPlaylistUI();
+        }
+
+        function removePlaylistItem(idx) {
+            if (playlist.length <= 1) {
+                showError("Cần duy trì ít nhất 1 từ trong danh sách để trình chiếu!");
+                return;
+            }
+
+            playlist.splice(idx, 1);
+            
+            if (state.slideIndex >= playlist.length) {
+                state.slideIndex = playlist.length - 1;
+            }
+
+            state.slideSubIndex = 0;
+
+            localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+            renderPlaylistUI();
+            initSlideshowPlayer();
+        }
+
+        function addNewCharacterToPlaylist() {
+            const char = addInputChar.value.trim();
+            const pinyin = addInputPinyin.value.trim() || 'hán tự';
+            const meaning = addInputMeaning.value.trim() || 'Nhập định nghĩa';
+
+            if (!char) {
+                showError("Vui lòng điền chữ Hán cần thêm!");
+                return;
+            }
+
+            const code = char.charCodeAt(0);
+            const isChinese = (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF);
+            if (!isChinese) {
+                showError("Ký tự nhập vào phải là một chữ Hán hợp lệ!");
+                return;
+            }
+
+            const dbWord = window.HSK1_DB ? window.HSK1_DB.find(w => w.char === char) : null;
+            const hanviet = dbWord ? dbWord.hanviet : (char === '好' ? 'Hảo' : 'Tự Do');
+            const finalMeaning = dbWord ? dbWord.meaning : meaning;
+            const finalPinyin = dbWord ? dbWord.pinyin : pinyin;
+
+            playlist.push({
+                char: char,
+                pinyin: finalPinyin,
+                hanviet: hanviet,
+                meaning: finalMeaning
+            });
+
+            addInputChar.value = '';
+            addInputPinyin.value = '';
+            addInputMeaning.value = '';
+
+            localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+            renderPlaylistUI();
+            showToast("Đã thêm từ!", `Đã thêm thành công từ "${char}" vào danh sách.`);
+        }
+
+        function switchOrderMode(mode) {
+            state.slideshowOrder = mode;
+            if (mode === 'seq') {
+                btnOrderSeq.className = "px-3 py-1 rounded-md font-semibold transition-all bg-amber-800 text-white";
+                btnOrderRandom.className = "px-3 py-1 rounded-md font-semibold transition-all text-stone-600 hover:text-stone-900";
+            } else {
+                btnOrderRandom.className = "px-3 py-1 rounded-md font-semibold transition-all bg-amber-800 text-white shadow-sm";
+                btnOrderSeq.className = "px-3 py-1 rounded-md font-semibold transition-all text-stone-600 hover:text-stone-900";
+            }
+        }
+
+        function jumpToSlide(index) {
+            state.slideIndex = index;
+            state.slideSubIndex = 0;
+            renderPlaylistUI();
+            initSlideshowPlayer();
+        }
+
+        function toggleSlideshowPause() {
+            state.isSlideshowPlaying = !state.isSlideshowPlaying;
+            if (state.isSlideshowPlaying) {
+                slidePauseText.textContent = "Tạm dừng Trình chiếu";
+                slidePauseIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />`;
+                playAutoLoopAnimation();
+            } else {
+                slidePauseText.textContent = "Tiếp tục Trình chiếu";
+                slidePauseIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />`;
+                stopSlideshowLoop();
+                if (state.slideshowWriter) {
+                    state.slideshowWriter.pauseAnimation();
+                }
+            }
+        }
+
+        function stopSlideshowLoop() {
+            if (state.slideshowTimeout) {
+                clearTimeout(state.slideshowTimeout);
+                state.slideshowTimeout = null;
+            }
+        }
+
+        function playSlideOffset(offset) {
+            stopSlideshowLoop();
+
+            if (playlist.length === 0) return;
+
+            state.slideSubIndex = 0;
+
+            if (state.slideshowOrder === 'random') {
+                state.slideIndex = Math.floor(Math.random() * playlist.length);
+            } else {
+                state.slideIndex = (state.slideIndex + offset + playlist.length) % playlist.length;
+            }
+
+            renderPlaylistUI();
+            initSlideshowPlayer();
+        }
+
+        function initSlideshowPlayer() {
+            stopSlideshowLoop();
+            slideshowTargetDiv.innerHTML = '';
+            
+            if (playlist.length === 0) {
+                slideshowLoader.classList.add('opacity-0', 'pointer-events-none');
+                slideshowTargetDiv.innerHTML = '<p class="text-stone-400 text-sm font-medium">Danh sách trống. Vui lòng thêm từ!</p>';
+                slidePinyin.textContent = '-';
+                slideHanviet.textContent = '-';
+                slideMeaning.textContent = 'Hãy thêm từ vựng vào danh sách trình chiếu để bắt đầu.';
+                slideshowIndexIndicator.textContent = 'Ký tự 0 / 0';
+                return;
+            }
+
+            slideshowLoader.classList.remove('opacity-0', 'pointer-events-none');
+            slideshowLoader.classList.add('opacity-100');
+
+            const currentSlideItem = playlist[state.slideIndex];
+            
+            slidePinyin.textContent = currentSlideItem.pinyin;
+            slideHanviet.textContent = currentSlideItem.hanviet.toUpperCase();
+            slideMeaning.textContent = currentSlideItem.meaning;
+            slideshowIndexIndicator.textContent = `Từ ${state.slideIndex + 1} / ${playlist.length}`;
+
+            if (state.slideSubIndex >= currentSlideItem.char.length) {
+                state.slideSubIndex = 0;
+            }
+
+            const charToDraw = currentSlideItem.char[state.slideSubIndex];
+
+            state.slideshowWriter = HanziWriter.create('slideshow-target-div', charToDraw, {
+                width: 280,
+                height: 280,
+                padding: 15,
+                showOutline: true,
+                strokeAnimationSpeed: 1.2,
+                delayBetweenStrokes: 350,
+                strokeColor: '#1c1917',
+                outlineColor: '#f5f5f4',
+                showCharacter: true
+            });
+
+            const loadPromise = state.slideshowWriter.loadingPromise || Promise.resolve();
+            loadPromise.then(() => {
+                slideshowLoader.classList.add('opacity-0', 'pointer-events-none');
+                slideshowLoader.classList.remove('opacity-100');
+                
+                if (state.isSlideshowPlaying) {
+                    playAutoLoopAnimation();
+                }
+            }).catch(() => {
+                slideshowLoader.classList.add('opacity-0', 'pointer-events-none');
+                showError("Không thể tải nét vẽ trình chiếu cho chữ này!");
+            });
+        }
+
+        function playAutoLoopAnimation() {
+            if (!state.slideshowWriter || !state.isSlideshowPlaying) return;
+
+            state.slideshowWriter.cancelQuiz();
+            state.slideshowWriter.showOutline();
+            state.slideshowWriter.showCharacter();
+
+            state.slideshowWriter.animateCharacter({
+                onComplete: () => {
+                    stopSlideshowLoop();
+                    
+                    const currentSlideItem = playlist[state.slideIndex];
+                    state.slideSubIndex++;
+                    
+                    if (state.slideSubIndex < currentSlideItem.char.length) {
+                        state.slideshowTimeout = setTimeout(() => {
+                            if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
+                                initSlideshowPlayer();
+                            }
+                        }, 1000);
+                    } else {
+                        state.slideSubIndex = 0;
+                        state.slideshowTimeout = setTimeout(() => {
+                            if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
+                                playSlideOffset(1);
+                            }
+                        }, 2000);
+                    }
+                }
+            });
+        }
+</script>
+</body>
+</html>
