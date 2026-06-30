@@ -19,6 +19,9 @@
             background-image: radial-gradient(#e5e5e0 1px, transparent 1px) !important;
             background-size: 16px 16px !important;
         }
+        body.popup-mode footer {
+            display: none !important;
+        }
         body.popup-mode main {
             padding: 0 !important;
             margin: 0 !important;
@@ -540,12 +543,12 @@
             '饿': 'Ngạ', '儿': 'Nhi', '店': 'Điếm', '房': 'Phòng', '间': 'Gian', '放': 'Phóng', '假': 'Giả', '飞': 'Phi',
             '非': 'Phi', '风': 'Phong', '干': 'Can', '净': 'Tịnh', '什': 'Thập', '么': 'Ma', '高': 'Cao', '兴': 'Hứng',
             '诉': 'Tố', '哥': 'Ca', '个': 'Cá', '给': 'Cấp', '跟': 'Cân', '工': 'Công', '关': 'Quan', '贵': 'Quý',
-            '国': 'Quốc', '家': 'Gia', '外': 'Ngoại', '过': 'Quá', '还': 'Hoàn', '是': 'Thị', '有': 'Hữu', '孩': 'Hài',
-            '汉': 'Hán', '语': 'Ngữ', '字': 'Tự', '吃': 'Ngật', '看': 'Khán', '听': 'Thính', '玩': 'Ngoạn', '号': 'Hiệu',
-            '喝': 'Hát', '和': 'Hòa', 'hèm': 'Hèm', 'hậu': 'Hậu', '花': 'Hoa', '坏': 'Hoại', '欢': 'Hoan', '迎': 'Nghênh',
-            '回': 'Hồi', '答': 'Đáp', '会': 'Hội', '火': 'Hỏa', '机': 'Cơ', '场': 'Trường', '蛋': 'Đản', 'Gi': 'Cát',
-            'lin:': 'Lâm', 'giáp': 'Giáp', '几': 'Kỷ', 'li': 'Li', '见': 'Kiến', '面': 'Diện', 'giang': 'Giang', 'giáo': 'Giáo',
-            '叫': 'Khiếu', '姐': 'Tỷ', '介': 'Giới', 'sao': 'Sao', '今': 'Kim', '进': 'Tiến', '九': 'Cửu', '就': 'Tựu',
+            '国': 'Quốc', '家': 'Gia', '外': 'Ngoại', '过': 'Quá', '还': 'Hoàn', 'sự': 'Sự', 'hữu': 'Hữu', 'hài': 'Hài',
+            'hán': 'Hán', 'ngữ': 'Ngữ', 'tự': 'Tự', 'ngật': 'Ngật', 'khán': 'Khán', 'thính': 'Thính', 'ngoạn': 'Ngoạn', 'hiệu': 'Hiệu',
+            'hát': 'Hát', 'hòa': 'Hòa', 'hận': 'Hận', 'hèm': 'Hèm', 'hậu': 'Hậu', 'hoa': 'Hoa', 'hoại': 'Hoại', 'hoan': 'Hoan', 'nghênh': 'Nghênh',
+            'hồi': 'Hồi', 'đáp': 'Đáp', 'hội': 'Hội', 'hỏa': 'Hỏa', 'cơ': 'Cơ', 'trường': 'Trường', 'đản': 'Đản', 'cát': 'Cát',
+            'lâm': 'Lâm', 'giáp': 'Giáp', 'kỷ': 'Kỷ', 'li': 'Li', 'kiến': 'Kiến', 'diện': 'Diện', 'giang': 'Giang', 'giáo': 'Giáo',
+            'khiếu': 'Khiếu', 'tỷ': 'Tỷ', 'giới': 'Giới', 'sao': 'Sao', 'kim': 'Kim', 'tiến': 'Tiến', 'cửu': 'Cửu', 'tựu': 'Tựu',
             'giác': 'Giác', 'ngoạn': 'Ngoạn', 'xo': 'Xo', 'khảo': 'Khảo', 'thi': 'Thí', 'khát': 'Khát', 'khóa': 'Khóa', 'khẩu': 'Khẩu',
             'khối': 'Khối', 'khoái': 'Khoái', 'lạc': 'Lạc', 'lão': 'Lão', 'sư': 'Sư', 'liễu': 'Liễu', 'lụy': 'Lụy', 'lãnh': 'Lãnh',
             'lưỡng': 'Lưỡng', 'linh': 'Linh', 'lục': 'Lục', 'lộ': 'Lộ', 'lục': 'Lục', 'ma': 'Ma', 'mã': 'Mã', 'mãi': 'Mãi',
@@ -559,7 +562,7 @@
             'ngọ': 'Ngọ', 'thiểu': 'Thiểu', 'thùy': 'Thùy', 'thân': 'Thân', 'thể': 'Thể', 'thập': 'Thập', 'mẹ': 'Mẹ', 'bệnh': 'Bệnh',
             'âm': 'Âm', 'thập': 'Thập', 'hầu': 'Hầu', 'thời': 'Thời', 'sự': 'Sự', 'tình': 'Tình', 'thủ': 'Thủ', 'biểu': 'Biểu',
             'thụ': 'Thụ', 'song': 'Song', 'thủy': 'Thủy', 'thụy': 'Thụy', 'thuyết': 'Thuyết', 'tứ': 'Tứ', 'tống': 'Tống', 'tuổi': 'Tuổi',
-            'tha': 'Tha', 'tha': 'Tha', 'thái': 'Thái', 'khí': 'Khí', 'đồng': 'Đồng', 'đồ': 'Đồ', 'quán': 'Quán', 'vãng': 'Vãng',
+            'tha': 'Tha', 'tha': 'Tha', 'thái': 'Thái', 'khí': 'Khí', 'đồng': 'Đòng', 'đồ': 'Đồ', 'quán': 'Quán', 'vãng': 'Vãng',
             'đề': 'Đề', 'ngã': 'Ngã', 'ngũ': 'Ngũ', 'tây': 'Tây', 'tẩy': 'Tẩy', 'hỷ': 'Hỷ', 'hạ': 'Hạ', 'hạ': 'Hạ',
             'tiên': 'Tiên', 'hiện': 'Hiện', 'tưởng': 'Tưởng', 'tiểu': 'Tiểu', 'tỷ': 'Tỷ', 'hiệu': 'Hiệu', 'kỳ': 'Kỳ', 'tinh': 'Tinh',
             'tả': 'Tả', 'tạ': 'Tạ', 'tân': 'Tân', 'hành': 'Hành', 'tánh': 'Tánh', 'hứng': 'Hứng', 'hứa': 'Hứa', 'nha': 'Nha',
@@ -725,7 +728,7 @@
             }
 
             // Check if page is opened in popup mode
-            if (window.location.search.includes('popup=true')) {
+            if (window.name === 'HanziFlowPopup') {
                 applyPopupStyles();
                 state.currentTab = 'slideshow';
                 tabPracticeView.classList.add('hidden');
@@ -888,7 +891,9 @@
             const btnPipToggle = document.getElementById('btn-pip-toggle');
             if (btnPipToggle) {
                 btnPipToggle.addEventListener('click', () => {
-                    if ('documentPictureInPicture' in window) {
+                    // ALWAYS use openStandardPopup when running on local file system (file://)
+                    // browser security blocks local clip-paths inside Document PiP (about:blank)
+                    if ('documentPictureInPicture' in window && window.location.protocol !== 'file:') {
                         openAlwaysOnTopPopup();
                     } else {
                         openStandardPopup();
@@ -1043,6 +1048,7 @@
             }
         }
 
+        // Render presets
         function renderActiveCategoryWords() {
             const container = document.getElementById('preset-container');
             if (!container) return;
@@ -1195,7 +1201,7 @@
                     
                     state.practiceTimeout = setTimeout(() => {
                         animateSequence(index + 1);
-                    }, 400);
+                    }, 2000);
                 }
             });
         }
@@ -1246,7 +1252,7 @@
 
         function showToast(title, desc, isSuccess = true) {
             if (isSuccess) {
-                toastMessage.className = "absolute bottom-4 left-4 right-4 bg-emerald-900/95 text-white py-3 px-4 rounded-xl shadow-lg border border-emerald-500/30 flex items-center gap-3 transition-transform duration-300 translate-y-24 opacity-0 pointer-events-none z-30";
+                toastMessage.className = "absolute bottom-4 left-4 right-4 bg-emerald-950/95 text-white py-3 px-4 rounded-xl shadow-lg border border-emerald-500/30 flex items-center gap-3 transition-transform duration-300 translate-y-24 opacity-0 pointer-events-none z-30";
             } else {
                 toastMessage.className = "absolute bottom-4 left-4 right-4 bg-amber-900/95 text-white py-3 px-4 rounded-xl shadow-lg border border-amber-500/30 flex items-center gap-3 transition-transform duration-300 translate-y-24 opacity-0 pointer-events-none z-30";
             }
@@ -1480,6 +1486,7 @@
             });
         }
 
+        // Reordering
         function movePlaylistItem(idx, direction) {
             const targetIdx = idx + direction;
             if (targetIdx < 0 || targetIdx >= playlist.length) return;
@@ -1565,6 +1572,7 @@
             showToast("Đã thêm từ!", `Đã thêm thành công từ "${char}" vào danh sách.`);
         }
 
+        // Playback order toggle
         function switchOrderMode(mode) {
             state.slideshowOrder = mode;
             if (mode === 'seq') {
@@ -1745,7 +1753,7 @@
                         if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
                             playAutoLoopAnimation(index + 1);
                         }
-                    }, 400);
+                    }, 2000); // Wait exactly 2 seconds between characters
                 }
             });
         }
@@ -1857,7 +1865,7 @@
             const top = (screen.height - height) / 2;
             
             const popupWin = window.open(
-                window.location.pathname + '?popup=true',
+                window.location.pathname,
                 'HanziFlowPopup',
                 `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes`
             );
@@ -1891,6 +1899,10 @@
                 const topBar = playerBox.querySelector('.flex.justify-between.items-center');
                 if (topBar) topBar.style.setProperty('display', 'none', 'important');
             }
+
+            // Hide the footer in popup mode
+            const footer = document.querySelector('footer');
+            if (footer) footer.style.setProperty('display', 'none', 'important');
 
             document.body.className = "text-stone-800 h-screen overflow-hidden flex flex-col bg-[#fafaf9] p-0 m-0";
             const main = document.querySelector('main');
