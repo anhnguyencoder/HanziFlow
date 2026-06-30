@@ -13,6 +13,31 @@
     <!-- HSK 3.0 Level 1 Vocabulary Database -->
     <script src="hsk1_data.js"></script>
     <style>
+        /* CSS rules for popup mode */
+        body.popup-mode {
+            background-color: #fafaf9;
+            background-image: radial-gradient(#e5e5e0 1px, transparent 1px) !important;
+            background-size: 16px 16px !important;
+        }
+        body.popup-mode main {
+            padding: 0 !important;
+            margin: 0 !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            max-width: none !important;
+        }
+        body.popup-mode #tab-slideshow-view {
+            height: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 12px !important;
+        }
+        body.popup-mode #slideshow-grid-container {
+            border-width: 2px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+        }
+    </style>
+    <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #fcfbf7;
@@ -36,11 +61,11 @@
         }
     </style>
 </head>
-<body class="text-stone-800 min-h-screen flex flex-col">
+<body class="text-stone-800 min-h-screen lg:h-screen lg:overflow-hidden flex flex-col">
 
     <!-- HEADER BAR -->
     <header class="border-b border-stone-200/80 bg-white/75 backdrop-blur-md sticky top-0 z-30 px-4 py-3">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="max-w-none w-full px-4 lg:px-8 mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-800 flex items-center justify-center text-white text-xl font-bold shadow-sm shadow-amber-800/30">
                     筆
@@ -66,14 +91,14 @@
     </header>
 
     <!-- MAIN WORKSPACE -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+    <main class="flex-grow max-w-none w-full mx-auto px-4 lg:px-8 py-6 lg:h-[calc(100vh-4.5rem)] lg:overflow-hidden flex flex-col">
 
         <!-- ================= TAB 1: PRACTICE & QUIZ INTERFACE ================= -->
-        <div id="tab-practice-view" class="grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300">
+        <div id="tab-practice-view" class="grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300 lg:h-full lg:overflow-hidden flex-grow">
             
-                        <section class="lg:col-span-3 space-y-4 order-2 lg:order-1">
-                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm space-y-4">
-                    <div class="flex justify-between items-center pb-2 border-b border-stone-100">
+                        <section class="lg:col-span-4 order-2 lg:order-1 flex lg:h-full lg:overflow-hidden">
+                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm flex flex-col justify-between w-full h-full space-y-4 overflow-hidden">
+                    <div class="flex justify-between items-center pb-2 border-b border-stone-100 flex-shrink-0">
                         <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-800">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
@@ -83,7 +108,7 @@
                     </div>
 
                     <!-- HSK 1 Category Filter -->
-                    <div class="space-y-1.5">
+                    <div class="space-y-1.5 flex-shrink-0">
                         <label for="category-select" class="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Chủ đề học tập</label>
                         <select id="category-select" class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-stone-50 text-xs font-bold text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700/50">
                             <!-- Categories will be rendered here dynamically -->
@@ -91,7 +116,7 @@
                     </div>
 
                     <!-- Category Progress Bar -->
-                    <div id="category-progress-container" class="bg-stone-50 p-3 rounded-xl border border-stone-200/50 space-y-1.5">
+                    <div id="category-progress-container" class="bg-stone-50 p-3 rounded-xl border border-stone-200/50 space-y-1.5 flex-shrink-0">
                         <div class="flex justify-between text-[10px] font-bold text-stone-500">
                             <span>Tiến độ chủ đề:</span>
                             <span id="category-progress-text" class="text-emerald-700 font-bold">0 / 0 (0%)</span>
@@ -102,20 +127,20 @@
                     </div>
 
                     <!-- Action buttons for active category -->
-                    <div>
+                    <div class="flex-shrink-0">
                         <button id="btn-add-category-slideshow" class="w-full py-2 bg-amber-800/10 hover:bg-amber-800/20 text-amber-900 border border-amber-800/20 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm">
                             📺 Nạp chủ đề vào Trình chiếu
                         </button>
                     </div>
                     
-                    <div class="max-h-[300px] overflow-y-auto pr-1">
+                    <div class="flex-grow overflow-y-auto pr-1 min-h-[250px] lg:min-h-0">
                         <div class="grid grid-cols-2 gap-2" id="preset-container">
                             <!-- Preset Cards will be generated by JS -->
                         </div>
                     </div>
 
                     <!-- Guidelines / Legend -->
-                    <div class="pt-3 border-t border-stone-100 space-y-2">
+                    <div class="pt-3 border-t border-stone-100 space-y-2 flex-shrink-0">
                         <h3 class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Quy tắc bút thuận cơ bản</h3>
                         <ul class="text-[10px] text-stone-600 space-y-1">
                             <li class="flex gap-1.5">
@@ -134,7 +159,7 @@
                     </div>
                     
                     <!-- Reset Progress button -->
-                    <div class="pt-3 border-t border-stone-100 text-center">
+                    <div class="pt-3 border-t border-stone-100 text-center flex-shrink-0">
                         <button id="btn-reset-history" class="text-[10px] text-stone-400 hover:text-red-600 transition-colors font-medium">
                             🔄 Xóa tiến trình học tập
                         </button>
@@ -142,7 +167,7 @@
                 </div>
             </section>
 <!-- CENTER PANEL: WRITING CANVAS & CONTROLS (6 cols on desktop) -->
-            <section class="lg:col-span-6 space-y-4 order-1 lg:order-2">
+            <section class="lg:col-span-5 space-y-4 order-1 lg:order-2 flex flex-col lg:h-full lg:overflow-y-auto pr-1">
                 <!-- Search bar inside practice tab -->
                 <div class="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-sm flex flex-col sm:flex-row gap-3 items-center">
                     <span class="text-xs font-bold text-stone-500 whitespace-nowrap">Tra cứu & Luyện chữ:</span>
@@ -276,7 +301,7 @@
             </section>
 
             <!-- RIGHT PANEL: DICTIONARY & STROKE BREAKDOWN (3 cols on desktop) -->
-            <section class="lg:col-span-3 space-y-4 order-3">
+            <section class="lg:col-span-3 space-y-4 order-3 flex flex-col lg:h-full lg:overflow-y-auto pr-1">
                 <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm space-y-4">
                     <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-800">
@@ -286,7 +311,7 @@
                     </h2>
 
                     <div class="flex items-center gap-4 bg-stone-50 p-4 rounded-xl border border-stone-200/60">
-                        <div id="dict-char" class="text-5xl font-semibold serif-font text-stone-900 bg-white w-16 h-16 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm">
+                        <div id="dict-char" class="text-5xl font-semibold serif-font text-stone-900 bg-white min-w-[4rem] px-3 h-16 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm whitespace-nowrap overflow-hidden flex-shrink-0">
                             永
                         </div>
                         <div class="space-y-1">
@@ -321,11 +346,11 @@
 
 
         <!-- ================= TAB 2: SLIDESHOW & PREVIEW INTERFACE ================= -->
-        <div id="tab-slideshow-view" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300">
+        <div id="tab-slideshow-view" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 transition-all duration-300 lg:h-full lg:overflow-hidden flex-grow">
             
             <!-- LEFT PANEL: PLAYLIST CONTROLLER & ORDERING (4 cols on desktop) -->
-            <section class="lg:col-span-4 space-y-4">
-                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm space-y-4">
+            <section class="lg:col-span-4 flex lg:h-full lg:overflow-hidden">
+                <div class="bg-white rounded-2xl border border-stone-200/80 p-5 shadow-sm flex flex-col justify-between w-full h-full space-y-4 overflow-hidden">
                     <div class="flex items-center justify-between">
                         <h2 class="text-base font-bold text-stone-900 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-amber-800">
@@ -360,7 +385,7 @@
                     </div>
 
                     <!-- Active Playlist Container -->
-                    <div id="playlist-container" class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                    <div id="playlist-container" class="space-y-2 flex-grow overflow-y-auto pr-1 min-h-[250px] lg:min-h-0">
                         <!-- Playlist items with sort buttons will render here -->
                     </div>
 
@@ -391,39 +416,32 @@
 </section>
 
             <!-- CENTER WORKSPACE: AUTO-DRAW CALLIGRAPHY BOX (8 cols on desktop) -->
-            <section class="lg:col-span-8 flex flex-col items-center justify-center space-y-6">
+            <section class="lg:col-span-8 flex flex-col items-center justify-center space-y-6 lg:h-full lg:overflow-y-auto pr-1">
                 
                 <div class="w-full bg-[#fcfaf2] rounded-3xl border border-stone-200/80 p-8 shadow-md flex flex-col items-center justify-center relative overflow-hidden">
                     <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 0), radial-gradient(#000 1px, transparent 0); background-size: 8px 8px; background-position: 0 0, 4px 4px;"></div>
                     
                     <!-- Top Index indicator & auto status -->
                     <div class="w-full flex justify-between items-center mb-4 z-10">
-                        <span id="slideshow-index-indicator" class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-3 py-1 rounded-full">Từ 1 / 8</span>
+                        <div class="flex items-center gap-2">
+                            <span id="slideshow-index-indicator" class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-3 py-1 rounded-full">Từ 1 / 8</span>
+                            <button id="btn-pip-toggle" class="text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200/60 px-3 py-1 rounded-full flex items-center gap-1 transition-colors" title="Bật pop-up nổi luôn trên cùng màn hình">
+                                📺 Cửa sổ nổi
+                            </button>
+                        </div>
                         <div class="flex items-center gap-1.5">
                             <span class="inline-flex w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
                             <span class="text-xs font-semibold text-stone-500">Tự động lặp lại (2 giây)</span>
                         </div>
                     </div>
 
-                    <!-- SLIDESHOW CANVAS INNER FRAME -->
-                    <div class="relative w-80 h-80 bg-white rounded-2xl shadow-md border-2 border-stone-300 flex items-center justify-center overflow-hidden z-10">
-                        <!-- Mễ Tự Lưới -->
-                        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100">
-                            <line x1="50" y1="0" x2="50" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
-                            <line x1="0" y1="50" x2="100" y2="50" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
-                            <line x1="0" y1="0" x2="100" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
-                            <line x1="100" y1="0" x2="0" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
-                            <rect x="0.5" y="0.5" width="99" height="99" fill="none" stroke="#f87171" stroke-width="1" />
-                        </svg>
-
+                    <!-- SLIDESHOW CANVAS WRAPPER CONTAINER -->
+                    <div id="slideshow-wrapper-container" class="w-full flex items-center justify-center min-h-[320px] relative z-10">
                         <!-- Canvas Loader Slideshow -->
-                        <div id="slideshow-loader" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+                        <div id="slideshow-loader" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none rounded-2xl">
                             <div class="w-10 h-10 border-4 border-stone-200 border-t-amber-800 rounded-full animate-spin"></div>
                             <p class="text-sm font-medium text-stone-600">Đang chuẩn bị vẽ...</p>
                         </div>
-
-                        <!-- Target element for slideshow writer -->
-                        <div id="slideshow-target-div" class="w-full h-full flex items-center justify-center"></div>
                     </div>
 
                     <!-- DIRECT PINYIN & DEFINITION CARDS BELOW CANVAS -->
@@ -502,7 +520,7 @@
             '福': { pinyin: 'fú', hanviet: 'Phúc', meaning: 'May mắn, hạnh phúc, tốt lành. Thường treo ngược (Phúc đáo) trong ngày Tết để cầu phúc lành.' },
             '愛': { pinyin: 'ài', hanviet: 'Ái', meaning: 'Yêu thương, tình yêu (Chữ Phồn thể). Cấu tạo chứa bộ Tâm (心 - trái tim) ở giữa thể hiện tình yêu từ lòng.' },
             '爱': { pinyin: 'ài', hanviet: 'Ái', meaning: 'Yêu thương, tình yêu (Chữ Giản thể). Được tối giản từ chữ Phồn thể giúp viết nhanh hơn.' },
-            '学': { pinyin: 'xué', hanviet: 'Học', meaning: 'Học hỏi, học tập, nghiên cứu kiến thức mới. Biểu tượng của tinh thần hiếu học truyền thức.' },
+            '学': { pinyin: 'xué', hanviet: 'Học', meaning: 'Học hỏi, học tập, nghiên cứu kiến thức mới. Biểu tượng của tinh thần hiếu học truyền thống.' },
             '美': { pinyin: 'měi', hanviet: 'Mỹ', meaning: 'Vẻ đẹp, hoàn mỹ, tốt đẹp. Kết hợp bởi chữ Dương (羊 - dê) và chữ Đại (Dạ - lớn).' },
             '德': { pinyin: 'dé', hanviet: 'Đức', meaning: 'Đạo đức, đức độ, phẩm hạnh cao đẹp. Biểu trưng cho sự rèn luyện lối sống thanh tao.' },
             '龙': { pinyin: 'lóng', hanviet: 'Long', meaning: 'Con rồng (Chữ Giản thể). Biểu tượng sức mạnh tối thượng, may mắn và thịnh vượng bền lâu.' }
@@ -524,32 +542,32 @@
             '诉': 'Tố', '哥': 'Ca', '个': 'Cá', '给': 'Cấp', '跟': 'Cân', '工': 'Công', '关': 'Quan', '贵': 'Quý',
             '国': 'Quốc', '家': 'Gia', '外': 'Ngoại', '过': 'Quá', '还': 'Hoàn', '是': 'Thị', '有': 'Hữu', '孩': 'Hài',
             '汉': 'Hán', '语': 'Ngữ', '字': 'Tự', '吃': 'Ngật', '看': 'Khán', '听': 'Thính', '玩': 'Ngoạn', '号': 'Hiệu',
-            '喝': 'Hát', '和': 'Hòa', '很': 'Hận', 'hậu': 'Hậu', '花': 'Hoa', '坏': 'Hoại', '欢': 'Hoan', '迎': 'Nghênh',
-            '回': 'Hồi', '答': 'Đáp', '会': 'Hội', '火': 'Hỏa', '机': 'Cơ', '场': 'Trường', '蛋': 'Đản', '吉': 'Cát',
-            '林': 'Lâm', '级': 'Cấp', '几': 'Kỷ', '里': 'Lý', '见': 'Kiến', '面': 'Diện', '江': 'Giang', '教': 'Giáo',
+            '喝': 'Hát', '和': 'Hòa', 'hèm': 'Hèm', 'hậu': 'Hậu', '花': 'Hoa', '坏': 'Hoại', '欢': 'Hoan', '迎': 'Nghênh',
+            '回': 'Hồi', '答': 'Đáp', '会': 'Hội', '火': 'Hỏa', '机': 'Cơ', '场': 'Trường', '蛋': 'Đản', 'Gi': 'Cát',
+            'lin:': 'Lâm', 'giáp': 'Giáp', '几': 'Kỷ', 'li': 'Li', '见': 'Kiến', '面': 'Diện', 'giang': 'Giang', 'giáo': 'Giáo',
             '叫': 'Khiếu', '姐': 'Tỷ', '介': 'Giới', 'sao': 'Sao', '今': 'Kim', '进': 'Tiến', '九': 'Cửu', '就': 'Tựu',
-            '觉': 'Giác', '玩': 'Ngoạn', '笑': 'Tiếu', '考': 'Khảo', 'thi': 'Thí', '渴': 'Khát', '課': 'Khóa', '口': 'Khẩu',
-            '块': 'Khối', '快': 'Khoái', '乐': 'Lạc', '老': 'Lão', '师': 'Sư', '了': 'Liễu', '累': 'Lụy', '冷': 'Lãnh',
-            '两': 'Lưỡng', '零': 'Linh', '六': 'Lục', '路': 'Lộ', '绿': 'Lục', '妈': 'Ma', '马': 'Mã', '买': 'Mua',
-            '卖': 'Bán', '慢': 'Mạn', '忙': 'Mang', '吗': 'Ma', '没': 'Một', '系': 'Hệ', '有': 'Hữu', '妹': 'Muội',
-            '门': 'Môn', '米': 'Mễ', '面': 'Diện', '条': 'Điều', '名': 'Danh', '明': 'Minh', '拿': 'Nã', '哪': 'Nả',
-            '那': 'Na', '奶': 'Nãi', '南': 'Nam', '男': 'Nam', '呢': 'Ni', '能': 'Năng', '你': 'Nhĩ', '您': 'Nẫm',
-            '鸟': 'Điểu', '牛': 'Ngưu', '女': 'Nữ', '旁': 'Bàng', '胖': 'Bàn', '跑': 'Tảo', '步': 'Bộ', '朋': 'Bằng',
-            '友': 'Hữu', '便': 'Tiện', '宜': 'Nghi', '票': 'Phiếu', '苹': 'Bình', '果': 'Quả', '七': 'Thất', '钱': 'Tiền',
-            '前': 'Tiền', '晴': 'Tình', '请': 'Thỉnh', '问': 'Vấn', '去': 'Khứ', '让': 'Nhượng', '热': 'Nhiệt',
-            '认': 'Nhận', '识': 'Thức', 'chân': 'Chân', '日': 'Nhật', '肉': 'Nhục', '三': 'Tam', '山': 'Sơn', '商': 'Thương',
-            '午': 'Ngọ', '少': 'Thiểu', '谁': 'Thùy', '身': 'Thân', '体': 'Thể', '什': 'Thập', 'mẹ': 'Mẹ', 'bệnh': 'Bệnh',
-            '音': 'Âm', '十': 'Thập', '候': 'Hầu', '时': 'Thời', '事': 'Sự', '情': 'Tình', '手': 'Thủ', '表': 'Biểu',
-            '树': 'Thụ', '双': 'Song', '水': 'Thủy', '睡': 'Thụy', '说': 'Thuyết', '四': 'Tứ', '送': 'Tống', 'tổi': 'Tuổi',
-            '他': 'Tha', '她': 'Tha', '太': 'Thái', 'Khí': 'Khí', '同': 'Đồng', 'đồ': 'Đồ', 'quán': 'Quán', '往': 'Vãng',
-            'đề': 'Đề', '我': 'Ngã', '五': 'Ngũ', '西': 'Tây', '洗': 'Tẩy', '喜': 'Hỷ', '下': 'Hạ', '夏': 'Hạ',
-            '先': 'Tiên', '现': 'Hiện', '想': 'Tưởng', '小': 'Tiểu', 'tỷ': 'Tỷ', 'hiệu': 'Hiệu', 'kỳ': 'Kỳ', '星': 'Tinh',
-            '写': 'Tả', 'tạ': 'Tạ', '新': 'Tân', '行': 'Hành', '姓': 'Tánh', 'hứng': 'Hứng', 'hứa': 'Hứa', '牙': 'Nha',
-            'loát': 'Loát', '眼': 'Nhãn', 'tình': 'Tình', '羊': 'Dương', 'dược': 'Dược', 'yêu': 'Yêu', 'Dã': 'Dã', '頁': 'Diệp',
-            '一': 'Nhất', 'tá': 'Tá', 'khởi': 'Khởi', 'định': 'Định', 'cộng': 'Cộng', 'dạng': 'Dạng', 'trực': 'Trực', 'y': 'Y',
-            'y': 'Y', 'phục': 'Phục', 'ghế': 'Ghế', '阴': 'Âm', 'âm': 'Âm', 'nhạc': 'Nhạc', 'nhân': 'Nhân', 'vị': 'Vị',
-            '在': 'Tại', '再': 'Tái', '早': 'Tảo', 'chẩm': 'Chẩm', 'dạng': 'Dạng', 'trạm': 'Trạm', 'trương': 'Trương', 'thảo': 'Thảo',
-            '这': 'Giá', 'trước': 'Trước', 'chính': 'Chính', 'tri': 'Tri', '中': 'Trung', 'trọng': 'Trọng', 'tô': 'Tô', 'trú': 'Trú',
+            'giác': 'Giác', 'ngoạn': 'Ngoạn', 'xo': 'Xo', 'khảo': 'Khảo', 'thi': 'Thí', 'khát': 'Khát', 'khóa': 'Khóa', 'khẩu': 'Khẩu',
+            'khối': 'Khối', 'khoái': 'Khoái', 'lạc': 'Lạc', 'lão': 'Lão', 'sư': 'Sư', 'liễu': 'Liễu', 'lụy': 'Lụy', 'lãnh': 'Lãnh',
+            'lưỡng': 'Lưỡng', 'linh': 'Linh', 'lục': 'Lục', 'lộ': 'Lộ', 'lục': 'Lục', 'ma': 'Ma', 'mã': 'Mã', 'mãi': 'Mãi',
+            'mại': 'Mại', 'mạn': 'Mạn', 'mang': 'Mang', 'ma': 'Ma', 'một': 'Một', 'hệ': 'Hệ', 'hữu': 'Hữu', 'muội': 'Muội',
+            'môn': 'Môn', 'mễ': 'Mễ', 'diện': 'Diện', 'điều': 'Điều', 'danh': 'Danh', 'minh': 'Minh', 'nã': 'Nã', 'nả': 'Nả',
+            'na': 'Na', 'nãi': 'Nãi', 'nam': 'Nam', 'nam': 'Nam', 'ni': 'Ni', 'năng': 'Năng', 'nhĩ': 'Nhĩ', 'nẫm': 'Nẫm',
+            'điểu': 'Điểu', 'ngưu': 'Ngưu', 'nữ': 'Nữ', 'bàng': 'Bàng', 'bàn': 'Bàn', 'tảo': 'Tảo', 'bộ': 'Bộ', 'bằng': 'Bằng',
+            'hữu': 'Hữu', 'tiện': 'Tiện', 'nghi': 'Nghi', 'phiếu': 'Phiếu', 'bình': 'Bình', 'quả': 'Quả', 'thất': 'Thất', 'tiền': 'Tiền',
+            'tiền': 'Tiền', 'tình': 'Tình', 'thỉnh': 'Thỉnh', 'vấn': 'Vấn', 'khứ': 'Khứ', 'nhượng': 'Nhượng', 'nhiệt': 'Nhiệt',
+            'nhận': 'Nhận', 'thức': 'Thức', 'chân': 'Chân', 'nhật': 'Nhật', 'nhục': 'Nhục', 'tam': 'Tam', 'sơn': 'Sơn', 'thương': 'Thương',
+            'ngọ': 'Ngọ', 'thiểu': 'Thiểu', 'thùy': 'Thùy', 'thân': 'Thân', 'thể': 'Thể', 'thập': 'Thập', 'mẹ': 'Mẹ', 'bệnh': 'Bệnh',
+            'âm': 'Âm', 'thập': 'Thập', 'hầu': 'Hầu', 'thời': 'Thời', 'sự': 'Sự', 'tình': 'Tình', 'thủ': 'Thủ', 'biểu': 'Biểu',
+            'thụ': 'Thụ', 'song': 'Song', 'thủy': 'Thủy', 'thụy': 'Thụy', 'thuyết': 'Thuyết', 'tứ': 'Tứ', 'tống': 'Tống', 'tuổi': 'Tuổi',
+            'tha': 'Tha', 'tha': 'Tha', 'thái': 'Thái', 'khí': 'Khí', 'đồng': 'Đồng', 'đồ': 'Đồ', 'quán': 'Quán', 'vãng': 'Vãng',
+            'đề': 'Đề', 'ngã': 'Ngã', 'ngũ': 'Ngũ', 'tây': 'Tây', 'tẩy': 'Tẩy', 'hỷ': 'Hỷ', 'hạ': 'Hạ', 'hạ': 'Hạ',
+            'tiên': 'Tiên', 'hiện': 'Hiện', 'tưởng': 'Tưởng', 'tiểu': 'Tiểu', 'tỷ': 'Tỷ', 'hiệu': 'Hiệu', 'kỳ': 'Kỳ', 'tinh': 'Tinh',
+            'tả': 'Tả', 'tạ': 'Tạ', 'tân': 'Tân', 'hành': 'Hành', 'tánh': 'Tánh', 'hứng': 'Hứng', 'hứa': 'Hứa', 'nha': 'Nha',
+            'loát': 'Loát', 'nhãn': 'Nhãn', 'tình': 'Tình', 'dương': 'Dương', 'dược': 'Dược', 'yêu': 'Yêu', 'dã': 'Dã', 'diệp': 'Diệp',
+            'nhất': 'Nhất', 'tá': 'Tá', 'khởi': 'Khởi', 'định': 'Định', 'cộng': 'Cộng', 'dạng': 'Dạng', 'trực': 'Trực', 'y': 'Y',
+            'y': 'Y', 'phục': 'Phục', 'ghế': 'Ghế', 'âm': 'Âm', 'âm': 'Âm', 'nhạc': 'Nhạc', 'nhân': 'Nhân', 'vị': 'Vị',
+            'tại': 'Tại', 'tái': 'Tái', 'tảo': 'Tảo', 'chẩm': 'Chẩm', 'dạng': 'Dạng', 'trạm': 'Trạm', 'trương': 'Trương', 'thảo': 'Thảo',
+            'giá': 'Giá', 'trước': 'Trước', 'chính': 'Chính', 'tri': 'Tri', 'trung': 'Trung', 'trọng': 'Trọng', 'tô': 'Tô', 'trú': 'Trú',
             'chuẩn': 'Chuẩn', 'bị': 'Bị', 'trác': 'Trác', 'tẩu': 'Tẩu', 'tối': 'Tối', 'tạc': 'Tạc', 'tả': 'Tả', 'tố': 'Tố',
             'tác': 'Tác', 'tác': 'Tác', 'tọa': 'Tọa', 'tọa': 'Tọa'
         };
@@ -577,14 +595,15 @@
             activeCategory: 'Chào hỏi & Cảm xúc',
             learnedWords: [], // list of learned characters stored in localStorage
             activeQuizIndex: 0, // active character index in writing quiz sequence
+            practiceTimeout: null, // Timer handle for practice animation sequence
 
             // Slideshow State
             slideIndex: 0,
-            slideSubIndex: 0, // Current character index inside compound words during slideshow
-            slideshowWriter: null,
+            slideshowWriters: [], // Array of HanziWriter instances for side-by-side rendering in slideshow
             slideshowTimeout: null,
             isSlideshowPlaying: true,
-            slideshowOrder: 'seq' // 'seq' (sequential) or 'random'
+            slideshowOrder: 'seq', // 'seq' (sequential) or 'random'
+            loadedPlaylistCategory: '' // Tracks currently loaded category name for select value
         };
 
         // Declaring all DOM Elements globally
@@ -645,7 +664,6 @@
             closeErrorModal = document.getElementById('close-error-modal');
             toastMessage = document.getElementById('toast-message');
 
-            slideshowTargetDiv = document.getElementById('slideshow-target-div');
             slideshowLoader = document.getElementById('slideshow-loader');
             slidePinyin = document.getElementById('slide-pinyin');
             slideHanviet = document.getElementById('slide-hanviet');
@@ -680,6 +698,9 @@
             // Load learned history
             state.learnedWords = JSON.parse(localStorage.getItem('learned_words') || '[]');
 
+            // Load playlist category state
+            state.loadedPlaylistCategory = localStorage.getItem('slideshow_category') || '';
+
             // Load playlist
             const savedPlaylist = localStorage.getItem('slideshow_playlist');
             if (savedPlaylist) {
@@ -703,7 +724,21 @@
                 populatePlaylistLoadDropdown();
             }
 
-            initHanziWriter(state.activeChar);
+            // Check if page is opened in popup mode
+            if (window.location.search.includes('popup=true')) {
+                applyPopupStyles();
+                state.currentTab = 'slideshow';
+                tabPracticeView.classList.add('hidden');
+                tabSlideshowView.classList.remove('hidden');
+                
+                if (tabBtnPractice) tabBtnPractice.style.display = 'none';
+                if (tabBtnSlideshow) tabBtnSlideshow.style.display = 'none';
+
+                initSlideshowPlayer();
+            } else {
+                initHanziWriter(state.activeChar);
+            }
+
             setupEventListeners();
             renderPlaylistUI();
         }
@@ -744,6 +779,17 @@
         }
 
         // ================= TAB 1: PRACTICE LOGIC =================
+        function stopPracticeAnimations() {
+            if (state.practiceTimeout) {
+                clearTimeout(state.practiceTimeout);
+                state.practiceTimeout = null;
+            }
+            state.writerInstances.forEach(w => {
+                w.cancelQuiz();
+                w.pauseAnimation();
+            });
+        }
+
         function setupEventListeners() {
             // Tab switcher
             tabBtnPractice.addEventListener('click', () => switchTab('practice'));
@@ -753,12 +799,20 @@
             modeAnimateBtn.addEventListener('click', () => switchPracticeMode('animate'));
             modeQuizBtn.addEventListener('click', () => switchPracticeMode('quiz'));
 
-            btnPlay.addEventListener('click', () => { animateSequence(0); });
+            btnPlay.addEventListener('click', () => {
+                stopPracticeAnimations();
+                state.writerInstances.forEach(w => {
+                    w.showOutline();
+                    w.hideCharacter();
+                });
+                animateSequence(0);
+            });
             btnPause.addEventListener('click', () => { state.writerInstances.forEach(w => w.pauseAnimation()); });
             btnRestart.addEventListener('click', () => {
+                stopPracticeAnimations();
                 state.writerInstances.forEach(w => {
-                    w.cancelQuiz();
-                    w.showCharacter();
+                    w.showOutline();
+                    w.hideCharacter();
                 });
                 animateSequence(0);
             });
@@ -830,6 +884,18 @@
 
             btnPlaylistAdd.addEventListener('click', addNewCharacterToPlaylist);
 
+            // Pop-up button trigger
+            const btnPipToggle = document.getElementById('btn-pip-toggle');
+            if (btnPipToggle) {
+                btnPipToggle.addEventListener('click', () => {
+                    if ('documentPictureInPicture' in window) {
+                        openAlwaysOnTopPopup();
+                    } else {
+                        openStandardPopup();
+                    }
+                });
+            }
+
             // HSK 1 UI Bindings
             if (categorySelect) {
                 categorySelect.addEventListener('change', (e) => {
@@ -851,8 +917,14 @@
                         meaning: w.meaning
                     }));
                     state.slideIndex = 0;
-                    state.slideSubIndex = 0;
+                    state.loadedPlaylistCategory = state.activeCategory;
+                    localStorage.setItem('slideshow_category', state.activeCategory);
                     localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
+                    
+                    if (playlistLoadSelect) {
+                        playlistLoadSelect.value = state.activeCategory;
+                    }
+                    
                     renderPlaylistUI();
                     showToast("Đã nạp trình chiếu!", `Nạp thành công ${playlist.length} từ của chủ đề "${state.activeCategory}".`);
                     switchTab('slideshow');
@@ -869,14 +941,24 @@
                     if (confirm("Bạn có chắc chắn muốn xóa toàn bộ danh sách trình chiếu không?")) {
                         playlist = [];
                         state.slideIndex = 0;
-                        state.slideSubIndex = 0;
+                        
+                        state.loadedPlaylistCategory = '';
+                        localStorage.setItem('slideshow_category', '');
+                        if (playlistLoadSelect) {
+                            playlistLoadSelect.value = '';
+                        }
+                        
                         localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
                         renderPlaylistUI();
                         stopSlideshowLoop();
-                        if (state.slideshowWriter) {
-                            state.slideshowWriter.cancelQuiz();
+                        
+                        const container = document.getElementById('slideshow-wrapper-container');
+                        if (container) {
+                            const loader = document.getElementById('slideshow-loader');
+                            container.innerHTML = '<p class="text-stone-400 text-sm font-medium">Danh sách trống. Vui lòng thêm từ!</p>';
+                            if (loader) container.appendChild(loader);
                         }
-                        slideshowTargetDiv.innerHTML = '<p class="text-stone-400 text-sm font-medium">Danh sách trống. Vui lòng thêm từ!</p>';
+                        
                         slidePinyin.textContent = '-';
                         slideHanviet.textContent = '-';
                         slideMeaning.textContent = 'Hãy thêm từ vựng vào danh sách trình chiếu để bắt đầu.';
@@ -890,6 +972,9 @@
                 playlistLoadSelect.addEventListener('change', (e) => {
                     const val = e.target.value;
                     if (!val) return;
+                    
+                    state.loadedPlaylistCategory = val;
+                    localStorage.setItem('slideshow_category', val);
                     
                     if (val === 'all') {
                         playlist = window.HSK1_DB.map(w => ({
@@ -911,12 +996,9 @@
                     }
                     
                     state.slideIndex = 0;
-                    state.slideSubIndex = 0;
                     localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
                     renderPlaylistUI();
                     initSlideshowPlayer();
-                    
-                    playlistLoadSelect.value = ''; // Reset select box
                 });
             }
         }
@@ -945,7 +1027,6 @@
 
         function populatePlaylistLoadDropdown() {
             if (!playlistLoadSelect) return;
-            // Clear items except the first two (default options)
             playlistLoadSelect.innerHTML = `
                 <option value="">-- Chọn chủ đề để nạp --</option>
                 <option value="all">Toàn bộ HSK 1 (506 từ)</option>
@@ -957,6 +1038,9 @@
                 opt.textContent = cat;
                 playlistLoadSelect.appendChild(opt);
             });
+            if (state.loadedPlaylistCategory) {
+                playlistLoadSelect.value = state.loadedPlaylistCategory;
+            }
         }
 
         function renderActiveCategoryWords() {
@@ -971,7 +1055,7 @@
                 const isLearned = Array.from(char).every(c => state.learnedWords.includes(c));
                 const card = document.createElement('button');
                 
-                card.className = `relative bg-stone-50 hover:bg-amber-50 active:bg-amber-100 border rounded-xl p-2.5 text-left transition-all hover:shadow-sm flex items-center gap-2.5 ${
+                card.className = `relative bg-stone-50 hover:bg-amber-50 active:bg-amber-100 border rounded-xl p-2.5 text-left transition-all hover:shadow-sm flex items-center gap-2.5 min-w-0 overflow-hidden ${
                     isLearned ? 'border-emerald-300 bg-emerald-50/20' : 'border-stone-200'
                 }`;
                 card.title = `${char} [${item.pinyin}] - ${item.hanviet}: ${item.meaning}`;
@@ -983,7 +1067,7 @@
                 };
 
                 card.innerHTML = `
-                    <div class="text-xl font-bold serif-font text-stone-900 bg-white w-9 h-9 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm flex-shrink-0">
+                    <div class="text-xl font-bold serif-font text-stone-900 bg-white min-w-[2.25rem] px-2 h-9 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm flex-shrink-0 whitespace-nowrap overflow-hidden">
                         ${char}
                     </div>
                     <div class="overflow-hidden min-w-0 flex-grow">
@@ -1072,6 +1156,7 @@
 
         function switchPracticeMode(newMode) {
             state.activeMode = newMode;
+            stopPracticeAnimations();
             if (newMode === 'animate') {
                 modeAnimateBtn.className = "py-2.5 px-4 rounded-xl font-semibold text-sm transition-all shadow-sm flex items-center justify-center gap-2 bg-amber-800 text-white border border-amber-900";
                 modeQuizBtn.className = "py-2.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-stone-200 hover:bg-stone-300 text-stone-800 border border-stone-300";
@@ -1079,8 +1164,8 @@
                 quizControls.classList.add('hidden');
                 
                 state.writerInstances.forEach(w => {
-                    w.cancelQuiz();
-                    w.showCharacter();
+                    w.showOutline();
+                    w.hideCharacter();
                 });
                 animateSequence(0);
             } else {
@@ -1096,31 +1181,46 @@
         function animateSequence(index = 0) {
             if (state.activeMode !== 'animate') return;
             if (index >= state.writerInstances.length) return;
-            
+
+            state.writerInstances[index].showOutline();
+            state.writerInstances[index].hideCharacter();
+
             state.writerInstances[index].animateCharacter({
                 onComplete: () => {
-                    setTimeout(() => {
+                    if (state.activeMode !== 'animate') return;
+                    
+                    if (state.practiceTimeout) {
+                        clearTimeout(state.practiceTimeout);
+                    }
+                    
+                    state.practiceTimeout = setTimeout(() => {
                         animateSequence(index + 1);
-                    }, 350);
+                    }, 400);
                 }
             });
         }
 
         function startQuizSequence(index = 0) {
             state.activeQuizIndex = index;
+            const charCount = state.writerInstances.length;
 
-            for (let i = 0; i < state.writerInstances.length; i++) {
+            for (let i = 0; i < charCount; i++) {
                 const box = document.getElementById(`canvas-box-${i}`);
                 if (box) {
+                    const borderRightClass = (i < charCount - 1) ? 'border-r border-red-100' : '';
+                    let sizeClass = 'w-72 h-72 sm:w-80 sm:h-80';
+                    if (charCount === 2) {
+                        sizeClass = 'w-40 h-40 sm:w-48 sm:h-48';
+                    } else if (charCount >= 3) {
+                        sizeClass = 'w-24 h-24 sm:w-32 sm:h-32';
+                    }
+
                     if (i === index) {
-                        box.classList.remove('border-stone-300', 'border-emerald-500');
-                        box.classList.add('border-amber-500', 'ring-2', 'ring-amber-500/20');
+                        box.className = `relative ${sizeClass} bg-amber-50/30 flex items-center justify-center overflow-hidden transition-all duration-300 z-20 ring-2 ring-amber-500 ${borderRightClass}`;
                     } else if (i < index) {
-                        box.classList.remove('border-stone-300', 'border-amber-500', 'ring-2', 'ring-amber-500/20');
-                        box.classList.add('border-emerald-500');
+                        box.className = `relative ${sizeClass} bg-emerald-50/10 flex items-center justify-center overflow-hidden transition-all duration-300 z-10 ring-1 ring-emerald-500/40 ${borderRightClass}`;
                     } else {
-                        box.classList.remove('border-amber-500', 'border-emerald-500', 'ring-2', 'ring-amber-500/20');
-                        box.classList.add('border-stone-300');
+                        box.className = `relative ${sizeClass} bg-white flex items-center justify-center overflow-hidden transition-all duration-300 ${borderRightClass}`;
                     }
                 }
             }
@@ -1137,11 +1237,6 @@
             state.writerInstances[index].cancelQuiz();
             state.writerInstances[index].quiz({
                 onComplete: () => {
-                    const box = document.getElementById(`canvas-box-${index}`);
-                    if (box) {
-                        box.classList.remove('border-amber-500', 'ring-2', 'ring-amber-500/20');
-                        box.classList.add('border-emerald-500');
-                    }
                     setTimeout(() => {
                         startQuizSequence(index + 1);
                     }, 400);
@@ -1182,6 +1277,8 @@
 
         function initHanziWriter(word, lookupWord) {
             showLoading(true);
+            stopPracticeAnimations();
+            
             const container = document.getElementById('canvas-wrapper-container');
             if (!container) return;
             container.innerHTML = '';
@@ -1199,10 +1296,17 @@
                 drawSize = 100;
             }
 
+            // Create the joint grid container
+            const gridContainer = document.createElement('div');
+            gridContainer.id = 'canvas-grid-container';
+            gridContainer.className = 'flex items-center justify-center bg-white border-2 border-red-400/80 rounded-2xl shadow-md overflow-hidden';
+            container.appendChild(gridContainer);
+
             for (let i = 0; i < charCount; i++) {
                 const box = document.createElement('div');
                 box.id = `canvas-box-${i}`;
-                box.className = `relative ${sizeClass} bg-white rounded-2xl shadow-inner border-2 border-stone-300 flex items-center justify-center overflow-hidden z-10 transition-all duration-300`;
+                const borderRightClass = (i < charCount - 1) ? 'border-r border-red-100' : '';
+                box.className = `relative ${sizeClass} bg-white flex items-center justify-center overflow-hidden transition-all duration-300 ${borderRightClass}`;
                 
                 box.innerHTML = `
                     <svg class="absolute inset-0 w-full h-full pointer-events-none writing-grid ${state.isGridVisible ? '' : 'opacity-0'} transition-opacity duration-300" viewBox="0 0 100 100">
@@ -1210,11 +1314,10 @@
                         <line x1="0" y1="50" x2="100" y2="50" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
                         <line x1="0" y1="0" x2="100" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
                         <line x1="100" y1="0" x2="0" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
-                        <rect x="0.5" y="0.5" width="99" height="99" fill="none" stroke="#f87171" stroke-width="1" />
                     </svg>
                     <div id="character-target-div-${i}" class="w-full h-full flex items-center justify-center cursor-pointer"></div>
                 `;
-                container.appendChild(box);
+                gridContainer.appendChild(box);
 
                 const writer = HanziWriter.create(`character-target-div-${i}`, word[i], {
                     width: drawSize,
@@ -1238,13 +1341,18 @@
             Promise.all(promises).then(() => {
                 showLoading(false);
                 if (state.activeMode === 'animate') {
+                    // Hide final characters first so they can animate sequentially from outline
+                    state.writerInstances.forEach(w => {
+                        w.showOutline();
+                        w.hideCharacter();
+                    });
                     animateSequence(0);
                 } else {
                     startQuizSequence(0);
                 }
             }).catch(() => {
                 showLoading(false);
-                showError("Không thể tải nét vẽ cho chữ này. Thử ký tự khác!");
+                showError("Không thể tải nét viết cho chữ này. Thử ký tự khác!");
             });
         }
 
@@ -1315,6 +1423,18 @@
         }
 
         // ================= TAB 2: SLIDESHOW =================
+        function showSlideshowLoading(isLoading) {
+            const loader = document.getElementById('slideshow-loader');
+            if (!loader) return;
+            if (isLoading) {
+                loader.classList.remove('opacity-0', 'pointer-events-none');
+                loader.classList.add('opacity-100');
+            } else {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                loader.classList.remove('opacity-100');
+            }
+        }
+
         function renderPlaylistUI() {
             if (!playlistContainer) return;
             playlistContainer.innerHTML = '';
@@ -1331,7 +1451,7 @@
 
                 div.innerHTML = `
                     <div class="flex items-center gap-2 overflow-hidden flex-grow cursor-pointer" onclick="jumpToSlide(${index})">
-                        <span class="text-xl font-bold serif-font text-stone-900 bg-white w-8 h-8 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm flex-shrink-0">
+                        <span class="text-xl font-bold serif-font text-stone-900 bg-white min-w-[2rem] px-1.5 h-8 rounded-lg flex items-center justify-center border border-stone-200 shadow-sm flex-shrink-0 whitespace-nowrap overflow-hidden">
                             ${item.char}
                         </span>
                         <div class="overflow-hidden min-w-0 flex-grow">
@@ -1374,6 +1494,10 @@
                 state.slideIndex = idx;
             }
 
+            state.loadedPlaylistCategory = '';
+            localStorage.setItem('slideshow_category', '');
+            if (playlistLoadSelect) playlistLoadSelect.value = '';
+
             localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
             renderPlaylistUI();
         }
@@ -1390,7 +1514,9 @@
                 state.slideIndex = playlist.length - 1;
             }
 
-            state.slideSubIndex = 0;
+            state.loadedPlaylistCategory = '';
+            localStorage.setItem('slideshow_category', '');
+            if (playlistLoadSelect) playlistLoadSelect.value = '';
 
             localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
             renderPlaylistUI();
@@ -1430,6 +1556,10 @@
             addInputPinyin.value = '';
             addInputMeaning.value = '';
 
+            state.loadedPlaylistCategory = '';
+            localStorage.setItem('slideshow_category', '');
+            if (playlistLoadSelect) playlistLoadSelect.value = '';
+
             localStorage.setItem('slideshow_playlist', JSON.stringify(playlist));
             renderPlaylistUI();
             showToast("Đã thêm từ!", `Đã thêm thành công từ "${char}" vào danh sách.`);
@@ -1448,7 +1578,6 @@
 
         function jumpToSlide(index) {
             state.slideIndex = index;
-            state.slideSubIndex = 0;
             renderPlaylistUI();
             initSlideshowPlayer();
         }
@@ -1458,14 +1587,12 @@
             if (state.isSlideshowPlaying) {
                 slidePauseText.textContent = "Tạm dừng Trình chiếu";
                 slidePauseIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />`;
-                playAutoLoopAnimation();
+                playAutoLoopAnimation(0);
             } else {
                 slidePauseText.textContent = "Tiếp tục Trình chiếu";
                 slidePauseIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />`;
                 stopSlideshowLoop();
-                if (state.slideshowWriter) {
-                    state.slideshowWriter.pauseAnimation();
-                }
+                state.slideshowWriters.forEach(w => w.pauseAnimation());
             }
         }
 
@@ -1481,8 +1608,6 @@
 
             if (playlist.length === 0) return;
 
-            state.slideSubIndex = 0;
-
             if (state.slideshowOrder === 'random') {
                 state.slideIndex = Math.floor(Math.random() * playlist.length);
             } else {
@@ -1495,11 +1620,21 @@
 
         function initSlideshowPlayer() {
             stopSlideshowLoop();
-            slideshowTargetDiv.innerHTML = '';
             
+            const container = document.getElementById('slideshow-wrapper-container');
+            if (!container) return;
+            
+            // Clear existing elements except the loader
+            const loader = document.getElementById('slideshow-loader');
+            container.innerHTML = '';
+            if (loader) container.appendChild(loader);
+            
+            state.slideshowWriters = [];
+
             if (playlist.length === 0) {
-                slideshowLoader.classList.add('opacity-0', 'pointer-events-none');
-                slideshowTargetDiv.innerHTML = '<p class="text-stone-400 text-sm font-medium">Danh sách trống. Vui lòng thêm từ!</p>';
+                showSlideshowLoading(false);
+                container.innerHTML = '<p class="text-stone-400 text-sm font-medium">Danh sách trống. Vui lòng thêm từ!</p>';
+                if (loader) container.appendChild(loader);
                 slidePinyin.textContent = '-';
                 slideHanviet.textContent = '-';
                 slideMeaning.textContent = 'Hãy thêm từ vựng vào danh sách trình chiếu để bắt đầu.';
@@ -1507,8 +1642,7 @@
                 return;
             }
 
-            slideshowLoader.classList.remove('opacity-0', 'pointer-events-none');
-            slideshowLoader.classList.add('opacity-100');
+            showSlideshowLoading(true);
 
             const currentSlideItem = playlist[state.slideIndex];
             
@@ -1517,68 +1651,252 @@
             slideMeaning.textContent = currentSlideItem.meaning;
             slideshowIndexIndicator.textContent = `Từ ${state.slideIndex + 1} / ${playlist.length}`;
 
-            if (state.slideSubIndex >= currentSlideItem.char.length) {
-                state.slideSubIndex = 0;
+            const charCount = currentSlideItem.char.length;
+            let sizeClass = 'w-72 h-72 sm:w-80 sm:h-80';
+            let drawSize = 280;
+            
+            if (charCount === 2) {
+                sizeClass = 'w-40 h-40 sm:w-48 sm:h-48';
+                drawSize = 160;
+            } else if (charCount >= 3) {
+                sizeClass = 'w-24 h-24 sm:w-32 sm:h-32';
+                drawSize = 100;
             }
 
-            const charToDraw = currentSlideItem.char[state.slideSubIndex];
+            // Create the joint grid container
+            const gridContainer = document.createElement('div');
+            gridContainer.id = 'slideshow-grid-container';
+            gridContainer.className = 'flex items-center justify-center bg-white border-2 border-red-400/80 rounded-2xl shadow-md overflow-hidden';
+            container.appendChild(gridContainer);
 
-            state.slideshowWriter = HanziWriter.create('slideshow-target-div', charToDraw, {
-                width: 280,
-                height: 280,
-                padding: 15,
-                showOutline: true,
-                strokeAnimationSpeed: 1.2,
-                delayBetweenStrokes: 350,
-                strokeColor: '#1c1917',
-                outlineColor: '#f5f5f4',
-                showCharacter: true
-            });
-
-            const loadPromise = state.slideshowWriter.loadingPromise || Promise.resolve();
-            loadPromise.then(() => {
-                slideshowLoader.classList.add('opacity-0', 'pointer-events-none');
-                slideshowLoader.classList.remove('opacity-100');
+            for (let i = 0; i < charCount; i++) {
+                const box = document.createElement('div');
+                box.id = `slideshow-box-${i}`;
+                const borderRightClass = (i < charCount - 1) ? 'border-r border-red-100' : '';
+                box.className = `relative ${sizeClass} bg-white flex items-center justify-center overflow-hidden transition-all duration-300 ${borderRightClass}`;
                 
+                box.innerHTML = `
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none writing-grid transition-opacity duration-300" viewBox="0 0 100 100">
+                        <line x1="50" y1="0" x2="50" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
+                        <line x1="0" y1="50" x2="100" y2="50" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.5" />
+                        <line x1="0" y1="0" x2="100" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
+                        <line x1="100" y1="0" x2="0" y2="100" stroke="#fca5a5" stroke-dasharray="2,2" stroke-width="0.3" />
+                    </svg>
+                    <div id="slideshow-target-div-${i}" class="w-full h-full flex items-center justify-center cursor-pointer"></div>
+                `;
+                gridContainer.appendChild(box);
+
+                const writer = HanziWriter.create(`slideshow-target-div-${i}`, currentSlideItem.char[i], {
+                    width: drawSize,
+                    height: drawSize,
+                    padding: charCount === 1 ? 15 : 10,
+                    showOutline: true,
+                    strokeAnimationSpeed: 1.2,
+                    delayBetweenStrokes: 350,
+                    strokeColor: '#1c1917',
+                    outlineColor: '#f5f5f4',
+                    showCharacter: true
+                });
+                state.slideshowWriters.push(writer);
+            }
+
+            const promises = state.slideshowWriters.map(w => w.loadingPromise || Promise.resolve());
+            Promise.all(promises).then(() => {
+                showSlideshowLoading(false);
                 if (state.isSlideshowPlaying) {
-                    playAutoLoopAnimation();
+                    state.slideshowWriters.forEach(w => {
+                        w.showOutline();
+                        w.hideCharacter();
+                    });
+                    playAutoLoopAnimation(0);
                 }
             }).catch(() => {
-                slideshowLoader.classList.add('opacity-0', 'pointer-events-none');
+                showSlideshowLoading(false);
                 showError("Không thể tải nét vẽ trình chiếu cho chữ này!");
             });
         }
 
-        function playAutoLoopAnimation() {
-            if (!state.slideshowWriter || !state.isSlideshowPlaying) return;
+        function playAutoLoopAnimation(index = 0) {
+            if (state.slideshowWriters.length === 0 || !state.isSlideshowPlaying) return;
+            if (index >= state.slideshowWriters.length) {
+                // Done animating all characters in this word, wait 2 seconds then restart from 0
+                stopSlideshowLoop();
+                state.slideshowTimeout = setTimeout(() => {
+                    if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
+                        state.slideshowWriters.forEach(w => {
+                            w.cancelQuiz();
+                            w.showOutline();
+                            w.hideCharacter();
+                        });
+                        playAutoLoopAnimation(0);
+                    }
+                }, 2000);
+                return;
+            }
 
-            state.slideshowWriter.cancelQuiz();
-            state.slideshowWriter.showOutline();
-            state.slideshowWriter.showCharacter();
+            state.slideshowWriters[index].cancelQuiz();
+            state.slideshowWriters[index].showOutline();
+            state.slideshowWriters[index].hideCharacter();
 
-            state.slideshowWriter.animateCharacter({
+            state.slideshowWriters[index].animateCharacter({
                 onComplete: () => {
                     stopSlideshowLoop();
-                    
-                    const currentSlideItem = playlist[state.slideIndex];
-                    state.slideSubIndex++;
-                    
-                    if (state.slideSubIndex < currentSlideItem.char.length) {
-                        state.slideshowTimeout = setTimeout(() => {
-                            if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
-                                initSlideshowPlayer();
-                            }
-                        }, 1000);
-                    } else {
-                        state.slideSubIndex = 0;
-                        state.slideshowTimeout = setTimeout(() => {
-                            if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
-                                playSlideOffset(1);
-                            }
-                        }, 2000);
-                    }
+                    state.slideshowTimeout = setTimeout(() => {
+                        if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
+                            playAutoLoopAnimation(index + 1);
+                        }
+                    }, 400);
                 }
             });
+        }
+
+        // ================= POPUP WINDOW & DOCUMENT PICTURE-IN-PICTURE =================
+        let pipWindow = null;
+
+        async function openAlwaysOnTopPopup() {
+            if (!('documentPictureInPicture' in window)) {
+                openStandardPopup();
+                return;
+            }
+
+            try {
+                if (pipWindow) {
+                    pipWindow.close();
+                }
+
+                pipWindow = await window.documentPictureInPicture.requestWindow({
+                    width: 500,
+                    height: 550
+                });
+
+                // Copy all styles to PiP window
+                [...document.styleSheets].forEach((styleSheet) => {
+                    try {
+                        const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+                        const style = document.createElement('style');
+                        style.textContent = cssRules;
+                        pipWindow.document.head.appendChild(style);
+                    } catch (e) {
+                        const link = document.createElement('link');
+                        link.rel = 'stylesheet';
+                        link.href = styleSheet.href;
+                        pipWindow.document.head.appendChild(link);
+                    }
+                });
+
+                // Custom PiP styles
+                const customStyle = document.createElement('style');
+                customStyle.textContent = `
+                    body {
+                        background-color: #fafaf9;
+                        background-image: radial-gradient(#e5e5e0 1px, transparent 1px) !important;
+                        background-size: 16px 16px !important;
+                        font-family: inherit;
+                        padding: 12px !important;
+                        margin: 0 !important;
+                        height: 100vh !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+                    .rounded-3xl {
+                        border-radius: 1.5rem !important;
+                        border-width: 1px !important;
+                        background-color: rgba(252, 250, 242, 0.9) !important;
+                        backdrop-filter: blur(4px) !important;
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        padding: 24px !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        gap: 16px !important;
+                    }
+                `;
+                pipWindow.document.head.appendChild(customStyle);
+
+                // Get player container
+                const playerContainer = document.querySelector('#tab-slideshow-view > section.lg\\:col-span-8 > div.rounded-3xl');
+                
+                // Placeholder in main document
+                const placeholder = document.createElement('div');
+                placeholder.id = 'pip-placeholder';
+                playerContainer.parentNode.insertBefore(placeholder, playerContainer);
+
+                // Hide the top index bar in PiP
+                const topBar = playerContainer.querySelector('.flex.justify-between.items-center');
+                let originalTopBarDisplay = '';
+                if (topBar) {
+                    originalTopBarDisplay = topBar.style.display;
+                    topBar.style.display = 'none';
+                }
+
+                // Append player to PiP body
+                pipWindow.document.body.appendChild(playerContainer);
+
+                pipWindow.addEventListener('pagehide', () => {
+                    if (topBar) {
+                        topBar.style.display = originalTopBarDisplay;
+                    }
+                    placeholder.parentNode.replaceChild(playerContainer, placeholder);
+                    pipWindow = null;
+                });
+
+            } catch (error) {
+                console.error("Document Picture-in-Picture failed, falling back to window.open", error);
+                openStandardPopup();
+            }
+        }
+
+        function openStandardPopup() {
+            const width = 500;
+            const height = 550;
+            const left = (screen.width - width) / 2;
+            const top = (screen.height - height) / 2;
+            
+            const popupWin = window.open(
+                window.location.pathname + '?popup=true',
+                'HanziFlowPopup',
+                `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes`
+            );
+            if (popupWin) {
+                popupWin.focus();
+            }
+        }
+
+        function applyPopupStyles() {
+            document.body.classList.add('popup-mode');
+            
+            const header = document.querySelector('header');
+            if (header) header.style.setProperty('display', 'none', 'important');
+            
+            const tabBtnPractice = document.getElementById('tab-btn-practice');
+            if (tabBtnPractice && tabBtnPractice.parentElement) {
+                tabBtnPractice.parentElement.style.setProperty('display', 'none', 'important');
+            }
+
+            const slideshowLeftSidebar = document.querySelector('#tab-slideshow-view > section.lg\\:col-span-4');
+            if (slideshowLeftSidebar) slideshowLeftSidebar.style.setProperty('display', 'none', 'important');
+
+            const slideshowCenterWorkspace = document.querySelector('#tab-slideshow-view > section.lg\\:col-span-8');
+            if (slideshowCenterWorkspace) {
+                slideshowCenterWorkspace.className = 'col-span-12 flex flex-col items-center justify-center h-full w-full p-2';
+            }
+
+            const playerBox = document.querySelector('#tab-slideshow-view .rounded-3xl');
+            if (playerBox) {
+                playerBox.className = 'w-full h-full bg-[#fcfaf2] flex flex-col items-center justify-center relative overflow-hidden p-6';
+                const topBar = playerBox.querySelector('.flex.justify-between.items-center');
+                if (topBar) topBar.style.setProperty('display', 'none', 'important');
+            }
+
+            document.body.className = "text-stone-800 h-screen overflow-hidden flex flex-col bg-[#fafaf9] p-0 m-0";
+            const main = document.querySelector('main');
+            if (main) {
+                main.className = "flex-grow w-full h-screen overflow-hidden flex flex-col p-2";
+            }
         }
 </script>
 </body>
