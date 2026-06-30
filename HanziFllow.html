@@ -18,6 +18,9 @@
             background-color: #fafaf9;
             background-image: radial-gradient(#e5e5e0 1px, transparent 1px) !important;
             background-size: 16px 16px !important;
+            overflow: hidden !important;
+            height: 100vh !important;
+            width: 100vw !important;
         }
         body.popup-mode footer {
             display: none !important;
@@ -28,16 +31,66 @@
             height: 100vh !important;
             width: 100vw !important;
             max-width: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
         body.popup-mode #tab-slideshow-view {
-            height: 100% !important;
-            width: 100% !important;
+            height: 100vh !important;
+            width: 100vw !important;
             margin: 0 !important;
             padding: 8px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
+
+        /* Constrain the center workspace container in popup mode to avoid overflows */
+        body.popup-mode #tab-slideshow-view > section.lg:col-span-8 {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+        }
+
+        /* Target the outer card container in popup mode */
+        body.popup-mode #tab-slideshow-view > section.lg:col-span-8 > div.rounded-3xl {
+            padding: 8px !important;
+            gap: 8px !important;
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 0px !important;
+            border: none !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+
+        body.popup-mode #slideshow-wrapper-container {
+            flex: 1 1 auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
         body.popup-mode #slideshow-grid-container {
             border-width: 2px !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+            margin: 0 auto !important;
         }
 
         /* Responsive HanziWriter SVG Scaling */
@@ -53,55 +106,64 @@
             height: 100% !important;
         }
 
-        /* Dynamic Grid box sizing using viewport dimensions */
+        /* Dynamic Grid box sizing using viewport dimensions - WIDER HORIZONTALLY (sát viền) */
         .char-count-1 [id^="canvas-box-"], .char-count-1 [id^="slideshow-box-"] {
-            width: min(65vw, 42vh) !important;
-            height: min(65vw, 42vh) !important;
-            max-width: 320px !important;
-            max-height: 320px !important;
-            min-width: 100px !important;
-            min-height: 100px !important;
+            width: min(96vw, 64vh) !important;
+            height: min(96vw, 64vh) !important;
+            max-width: 420px !important;
+            max-height: 420px !important;
+            min-width: 80px !important;
+            min-height: 80px !important;
         }
         .char-count-2 [id^="canvas-box-"], .char-count-2 [id^="slideshow-box-"] {
-            width: min(42vw, 28vh) !important;
-            height: min(42vw, 28vh) !important;
-            max-width: 180px !important;
-            max-height: 180px !important;
-            min-width: 70px !important;
-            min-height: 70px !important;
+            width: min(48vw, 32vh) !important;
+            height: min(48vw, 32vh) !important;
+            max-width: 220px !important;
+            max-height: 220px !important;
+            min-width: 60px !important;
+            min-height: 60px !important;
         }
         .char-count-3 [id^="canvas-box-"], .char-count-3 [id^="slideshow-box-"] {
-            width: min(28vw, 19vh) !important;
-            height: min(28vw, 19vh) !important;
-            max-width: 120px !important;
-            max-height: 120px !important;
-            min-width: 50px !important;
-            min-height: 50px !important;
+            width: min(32vw, 21.3vh) !important;
+            height: min(32vw, 21.3vh) !important;
+            max-width: 150px !important;
+            max-height: 150px !important;
+            min-width: 45px !important;
+            min-height: 45px !important;
         }
 
         /* Text and card responsiveness in popup mode */
         body.popup-mode #slide-pinyin {
-            font-size: clamp(0.75rem, 3vh, 1.25rem) !important;
-            padding: 0.25rem 0.75rem !important;
+            font-size: clamp(0.75rem, 3vh, 1.1rem) !important;
+            padding: 0.15rem 0.6rem !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
         }
         body.popup-mode #slide-hanviet {
-            font-size: clamp(1rem, 4vh, 1.75rem) !important;
-            margin-top: 0.25rem !important;
+            font-size: clamp(0.95rem, 3.8vh, 1.5rem) !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
         }
         body.popup-mode #slide-meaning {
-            font-size: clamp(0.75rem, 2.5vh, 1rem) !important;
-            padding: 0.5rem !important;
-        }
-        body.popup-mode .rounded-3xl {
-            padding: clamp(8px, 3vh, 24px) !important;
-            gap: clamp(8px, 2.5vh, 20px) !important;
+            font-size: clamp(0.7rem, 2.5vh, 0.95rem) !important;
+            padding: 6px 12px !important;
+            margin: 0 !important;
+            width: 96% !important;
+            max-width: 450px !important;
+            text-align: center !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
         }
         body.popup-mode #tab-slideshow-view button {
-            padding-top: clamp(0.25rem, 1.5vh, 0.75rem) !important;
-            padding-bottom: clamp(0.25rem, 1.5vh, 0.75rem) !important;
-            padding-left: clamp(0.5rem, 2vw, 1.25rem) !important;
-            padding-right: clamp(0.5rem, 2vw, 1.25rem) !important;
-            font-size: clamp(0.7rem, 2vh, 0.9rem) !important;
+            padding-top: clamp(0.2rem, 1.2vh, 0.5rem) !important;
+            padding-bottom: clamp(0.2rem, 1.2vh, 0.5rem) !important;
+            padding-left: clamp(0.5rem, 2vw, 1rem) !important;
+            padding-right: clamp(0.5rem, 2vw, 1rem) !important;
+            font-size: clamp(0.7rem, 1.8vh, 0.85rem) !important;
+        }
+        body.popup-mode #tab-slideshow-view .flex.justify-center.gap-4 {
+            gap: 8px !important;
+            margin-top: 0 !important;
+            margin-bottom: 4px !important;
         }
     </style>
     <style>
@@ -512,7 +574,7 @@
                     </div>
 
                     <!-- DIRECT PINYIN & DEFINITION CARDS BELOW CANVAS -->
-                    <div class="w-full max-w-lg mt-6 text-center space-y-3 z-10">
+                    <div id="slide-pinyin-definition-container" class="w-full max-w-lg mt-6 text-center space-y-3 z-10">
                         <div class="space-y-1">
                             <div class="inline-block px-4 py-1.5 bg-amber-800 text-stone-50 font-bold tracking-widest text-lg rounded-xl shadow-sm shadow-amber-800/20" id="slide-pinyin">
                                 yǒng
@@ -520,7 +582,7 @@
                             <h2 class="text-xl font-bold text-stone-900 serif-font" id="slide-hanviet">VĨNH</h2>
                         </div>
                         
-                        <div class="bg-white/80 backdrop-blur-sm border border-stone-200/60 p-4 rounded-xl shadow-sm">
+                        <div id="slide-meaning-container" class="bg-white/80 backdrop-blur-sm border border-stone-200/60 p-4 rounded-xl shadow-sm">
                             <p id="slide-meaning" class="text-sm text-stone-600 leading-relaxed font-medium">
                                 Mãi mãi, vĩnh viễn, trường tồn. Chữ "Vĩnh" (永) chứa đủ 8 nét cơ bản của chữ Hán.
                             </p>
@@ -528,7 +590,7 @@
                     </div>
 
                     <!-- NAVIGATION CONTROLLER BAR -->
-                    <div class="w-full max-w-sm mt-6 flex justify-between items-center gap-3 z-10">
+                    <div id="slide-controls-container" class="w-full max-w-sm mt-6 flex justify-between items-center gap-3 z-10">
                         <button id="btn-slide-prev" class="p-3 bg-stone-200 hover:bg-stone-300 active:bg-stone-400 text-stone-800 rounded-xl transition-all shadow-sm flex items-center gap-1 text-xs font-bold">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -605,9 +667,9 @@
             '弟': 'Đệ', '第': 'Đệ', '二': 'Nhị', '电': 'Điện', '脑': 'Não', '视': 'Thị', '机': 'Cơ', '影': 'Ảnh',
             '院': 'Viện', '东': 'Đông', '西': 'Tây', '动': 'Động', '作': 'Tác', '都': 'Đô', '读': 'Độc', '书': 'Thư',
             '饿': 'Ngạ', '儿': 'Nhi', '店': 'Điếm', '房': 'Phòng', '间': 'Gian', '放': 'Phóng', '假': 'Giả', '飞': 'Phi',
-            '非': 'Phi', '风': 'Phong', '干': 'Can', '净': 'Tịnh', '什': 'Thập', '么': 'Ma', '高': 'Cao', '兴': 'Hứng',
-            '诉': 'Tố', '哥': 'Ca', '个': 'Cá', '给': 'Cấp', '跟': 'Cân', '工': 'Công', '关': 'Quan', '贵': 'Quý',
-            '国': 'Quốc', '家': 'Gia', '外': 'Ngoại', '过': 'Quá', '还': 'Hoàn', 'sự': 'Sự', 'hữu': 'Hữu', 'hài': 'Hài',
+            '非': 'Phi', '风': 'Phong', '干': 'Can', '净': 'Tịnh', '什': 'Thập', 'me': 'Ma', 'cao': 'Cao', 'hưng': 'Hưng',
+            'tố': 'Tố', 'ca': 'Ca', 'cá': 'Cá', 'cấp': 'Cấp', 'cân': 'Cân', 'công': 'Công', 'quan': 'Quan', 'quý': 'Quý',
+            'quốc': 'Quốc', 'gia': 'Gia', 'ngoại': 'Ngoại', 'quá': 'Quá', 'hoàn': 'Hoàn', 'sự': 'Sự', 'hữu': 'Hữu', 'hài': 'Hài',
             'hán': 'Hán', 'ngữ': 'Ngữ', 'tự': 'Tự', 'ngật': 'Ngật', 'khán': 'Khán', 'thính': 'Thính', 'ngoạn': 'Ngoạn', 'hiệu': 'Hiệu',
             'hát': 'Hát', 'hòa': 'Hòa', 'hận': 'Hận', 'hèm': 'Hèm', 'hậu': 'Hậu', 'hoa': 'Hoa', 'hoại': 'Hoại', 'hoan': 'Hoan', 'nghênh': 'Nghênh',
             'hồi': 'Hồi', 'đáp': 'Đáp', 'hội': 'Hội', 'hỏa': 'Hỏa', 'cơ': 'Cơ', 'trường': 'Trường', 'đản': 'Đản', 'cát': 'Cát',
@@ -1669,6 +1731,40 @@
             }
         }
 
+        // Loop animation
+        function playAutoLoopAnimation(index = 0) {
+            if (state.slideshowWriters.length === 0 || !state.isSlideshowPlaying) return;
+            if (index >= state.slideshowWriters.length) {
+                stopSlideshowLoop();
+                state.slideshowTimeout = setTimeout(() => {
+                    if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
+                        state.slideshowWriters.forEach(w => {
+                            w.cancelQuiz();
+                            w.showOutline();
+                            w.hideCharacter();
+                        });
+                        playAutoLoopAnimation(0);
+                    }
+                }, 2000);
+                return;
+            }
+
+            state.slideshowWriters[index].cancelQuiz();
+            state.slideshowWriters[index].showOutline();
+            state.slideshowWriters[index].hideCharacter();
+
+            state.slideshowWriters[index].animateCharacter({
+                onComplete: () => {
+                    stopSlideshowLoop();
+                    state.slideshowTimeout = setTimeout(() => {
+                        if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
+                            playAutoLoopAnimation(index + 1);
+                        }
+                    }, 2000);
+                }
+            });
+        }
+
         function stopSlideshowLoop() {
             if (state.slideshowTimeout) {
                 clearTimeout(state.slideshowTimeout);
@@ -1790,40 +1886,6 @@
             });
         }
 
-        // Loop animation
-        function playAutoLoopAnimation(index = 0) {
-            if (state.slideshowWriters.length === 0 || !state.isSlideshowPlaying) return;
-            if (index >= state.slideshowWriters.length) {
-                stopSlideshowLoop();
-                state.slideshowTimeout = setTimeout(() => {
-                    if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
-                        state.slideshowWriters.forEach(w => {
-                            w.cancelQuiz();
-                            w.showOutline();
-                            w.hideCharacter();
-                        });
-                        playAutoLoopAnimation(0);
-                    }
-                }, 2000);
-                return;
-            }
-
-            state.slideshowWriters[index].cancelQuiz();
-            state.slideshowWriters[index].showOutline();
-            state.slideshowWriters[index].hideCharacter();
-
-            state.slideshowWriters[index].animateCharacter({
-                onComplete: () => {
-                    stopSlideshowLoop();
-                    state.slideshowTimeout = setTimeout(() => {
-                        if (state.isSlideshowPlaying && state.currentTab === 'slideshow') {
-                            playAutoLoopAnimation(index + 1);
-                        }
-                    }, 2000);
-                }
-            });
-        }
-
         // ================= POPUP WINDOW & DOCUMENT PICTURE-IN-PICTURE =================
         let pipWindow = null;
 
@@ -1840,7 +1902,7 @@
 
                 pipWindow = await window.documentPictureInPicture.requestWindow({
                     width: 500,
-                    height: 550
+                    height: 750 // Increased default height to 750px (approx. 1/8 longer than 660px)
                 });
 
                 [...document.styleSheets].forEach((styleSheet) => {
@@ -1920,7 +1982,7 @@
 
         function openStandardPopup() {
             const width = 500;
-            const height = 550;
+            const height = 750; // Increased default height to 750px (approx. 1/8 longer than 660px)
             const left = (screen.width - width) / 2;
             const top = (screen.height - height) / 2;
             
@@ -1955,7 +2017,6 @@
 
             const playerBox = document.querySelector('#tab-slideshow-view .rounded-3xl');
             if (playerBox) {
-                playerBox.className = 'w-full h-full bg-[#fcfaf2] flex flex-col items-center justify-center relative overflow-hidden p-6';
                 const topBar = playerBox.querySelector('.flex.justify-between.items-center');
                 if (topBar) topBar.style.setProperty('display', 'none', 'important');
             }
