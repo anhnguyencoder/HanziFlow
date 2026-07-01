@@ -649,7 +649,7 @@
             '福': { pinyin: 'fú', hanviet: 'Phúc', meaning: 'May mắn, hạnh phúc, tốt lành. Thường treo ngược (Phúc đáo) trong ngày Tết để cầu phúc lành.' },
             '愛': { pinyin: 'ài', hanviet: 'Ái', meaning: 'Yêu thương, tình yêu (Chữ Phồn thể). Cấu tạo chứa bộ Tâm (心 - trái tim) ở giữa thể hiện tình yêu từ lòng.' },
             '爱': { pinyin: 'ài', hanviet: 'Ái', meaning: 'Yêu thương, tình yêu (Chữ Giản thể). Được tối giản từ chữ Phồn thể giúp viết nhanh hơn.' },
-            '学': { pinyin: 'xué', hanviet: 'Học', meaning: 'Học hỏi, học tập, nghiên cứu kiến thức mới. Biểu tượng của tinh thần hiếu học truyền thức.' },
+            '学': { pinyin: 'xué', hanviet: 'Học', meaning: 'Học hỏi, học tập, nghiên cứu kiến thức mới. Biểu tượng của tinh thần hiếu học truyền thống.' },
             '美': { pinyin: 'měi', hanviet: 'Mỹ', meaning: 'Vẻ đẹp, hoàn mỹ, tốt đẹp. Kết hợp bởi chữ Dương (羊 - dê) và chữ Đại (Dạ - lớn).' },
             '德': { pinyin: 'dé', hanviet: 'Đức', meaning: 'Đạo đức, đức độ, phẩm hạnh cao đẹp. Biểu trưng cho sự rèn luyện lối sống thanh tao.' },
             '龙': { pinyin: 'lóng', hanviet: 'Long', meaning: 'Con rồng (Chữ Giản thể). Biểu tượng sức mạnh tối thượng, may mắn và thịnh vượng bền lâu.' }
@@ -657,48 +657,48 @@
 
         const fallbackHanViet = {
             '爱': 'Ái', '好': 'Hảo', '八': 'Bát', '爸': 'Ba', '吧': 'Ba', '白': 'Bạch', '天': 'Thiên', '百': 'Bách',
-            '班': 'Ban', '半': 'Bán', '年': 'Niên', '帮': 'Bang', 'mang': 'Mang', 'bao': 'Bao', 'tử': 'Tử', 'bôi': 'Bôi',
-            'Bắc': 'Bắc', 'Biên': 'Biên', 'Kinh': 'Kinh', 'Bản': 'Bản', 'Tỉ': 'Tỉ', 'Biệt': 'Biệt', 'sự': 'Sự', 'Nhân': 'Nhân',
-            'Bệnh': 'Bệnh', 'Bất': 'Bất', 'Đại': 'Đại', 'Đối': 'Đối', 'Khách': 'Khách', 'Khí': 'Khí', 'Dụng': 'Dụng', 'Thái': 'Thái',
-            'Trà': 'Trà', 'Sai': 'Sai', 'Thường': 'Thường', 'Xướng': 'Xướng', 'Ca': 'Ca', 'Xa': 'Xa', 'Phiếu': 'Phiếu', 'Thượng': 'Thượng',
-            'Trạm': 'Trạm', 'Ngật': 'Ngật', 'Phạn': 'Phạn', 'Xuất': 'Xuất', 'Lai': 'Lai', 'Khứ': 'Khứ', 'Xuyên': 'Xuyên', 'Sàng': 'Sàng',
-            'Thứ': 'Thứ', 'Tòng': 'Tòng', 'Thác': 'Thác', 'Đả': 'Đả', 'Thoại': 'Thoại', 'Khai': 'Khai', 'Cầu': 'Cầu', 'Học': 'Học',
-            'Sinh': 'Sinh', 'Đáo': 'Đáo', 'Địa': 'Địa', 'Điểm': 'Điểm', 'Phương': 'Phương', 'Đồ': 'Đồ', 'Đắc': 'Đắc', 'Đẳng': 'Đẳng',
-            'Đệ': 'Đệ', 'Đệ': 'Đệ', 'Nhị': 'Nhị', 'Điện': 'Điện', 'Não': 'Não', 'Thị': 'Thị', 'Cơ': 'Cơ', 'Ảnh': 'Ảnh',
-            'Viện': 'Viện', 'Đông': 'Đông', 'Tây': 'Tây', 'Động': 'Động', 'Tác': 'Tác', 'Đô': 'Đô', 'Độc': 'Độc', 'Thư': 'Thư',
-            'Ngạ': 'Ngạ', 'Nhi': 'Nhi', 'Điếm': 'Điếm', 'Phòng': 'Phòng', 'Gian': 'Gian', 'Phóng': 'Phóng', 'Giả': 'Giả', 'Phi': 'Phi',
-            'Phi': 'Phi', 'Phong': 'Phong', 'Can': 'Can', 'Tịnh': 'Tịnh', 'Thập': 'Thập', 'Ma': 'Ma', 'Cao': 'Cao', 'Hưng': 'Hưng',
-            'Tố': 'Tố', 'Ca': 'Ca', 'Cá': 'Cá', 'Cấp': 'Cấp', 'Cân': 'Cân', 'Công': 'Công', 'Quan': 'Quan', 'Quý': 'Quý',
-            'Quốc': 'Quốc', 'Gia': 'Gia', 'Ngoại': 'Ngoại', 'Quá': 'Quá', 'Hoàn': 'Hoàn', 'Sự': 'Sự', 'Hữu': 'Hữu', 'Hài': 'Hài',
-            'Hán': 'Hán', 'Ngữ': 'Ngữ', 'Tự': 'Tự', 'Ngật': 'Ngật', 'Khán': 'Khán', 'Thính': 'Thính', 'Ngoạn': 'Ngoạn', 'Hiệu': 'Hiệu',
-            'Hát': 'Hát', 'Hòa': 'Hòa', 'Hận': 'Hận', 'Hèm': 'Hèm', 'Hậu': 'Hậu', 'Hoa': 'Hoa', 'Hoại': 'Hoại', 'Hoan': 'Hoan', 'Nghênh': 'Nghênh',
-            'Hồi': 'Hồi', 'Đáp': 'Đáp', 'Hội': 'Hội', 'Hỏa': 'Hỏa', 'Cơ': 'Cơ', 'Trường': 'Trường', 'Đản': 'Đản', 'Cát': 'Cát',
-            'Lâm': 'Lâm', 'Giáp': 'Giáp', 'Kỷ': 'Kỷ', 'Li': 'Li', 'Kiến': 'Kiến', 'Diện': 'Diện', 'Giang': 'Giang', 'Giáo': 'Giáo',
-            'Khiếu': 'Khiếu', 'Tỷ': 'Tỷ', 'Giới': 'Giới', 'Sao': 'Sao', 'Kim': 'Kim', 'Tiến': 'Tiến', 'Cửu': 'Cửu', 'Tựu': 'Tựu',
-            'Giác': 'Giác', 'Ngoạn': 'Ngoạn', 'Xo': 'Xo', 'Khảo': 'Khảo', 'Thí': 'Thí', 'Khát': 'Khát', 'Khóa': 'Khóa', 'Khẩu': 'Khẩu',
-            'Khối': 'Khối', 'Khoái': 'Khoái', 'Lạc': 'Lạc', 'Lão': 'Lão', 'Sư': 'Sư', 'Liễu': 'Liễu', 'Lụy': 'Lụy', 'Lãnh': 'Lãnh',
-            'Lưỡng': 'Lưỡng', 'Linh': 'Linh', 'Lục': 'Lục', 'Lộ': 'Lộ', 'Lục': 'Lục', 'Ma': 'Ma', 'Mã': 'Mã', 'Mãi': 'Mãi',
-            'Mại': 'Mại', 'Mạn': 'Mạn', 'Mang': 'Mang', 'Ma': 'Ma', 'Một': 'Một', 'Hệ': 'Hệ', 'Hữu': 'Hữu', 'Muội': 'Muội',
-            'Môn': 'Môn', 'Mễ': 'Mễ', 'Diện': 'Diện', 'Điều': 'Điều', 'Danh': 'Danh', 'Minh': 'Minh', 'Nã': 'Nã', 'Nả': 'Nả',
-            'Na': 'Na', 'Nãi': 'Nãi', 'Nam': 'Nam', 'Nam': 'Nam', 'Ni': 'Ni', 'Năng': 'Năng', 'Nhĩ': 'Nhĩ', 'Nẫm': 'Nẫm',
-            'Điểu': 'Điểu', 'Ngưu': 'Ngưu', 'Nữ': 'Nữ', 'Bàng': 'Bàng', 'Bàn': 'Bàn', 'Tảo': 'Tảo', 'Bộ': 'Bộ', 'Bằng': 'Bằng',
-            'Hữu': 'Hữu', 'Tiện': 'Tiện', 'Nghi': 'Nghi', 'Phiếu': 'Phiếu', 'Bình': 'Bình', 'Quả': 'Quả', 'Thất': 'Thất', 'Tiền': 'Tiền',
-            'Tiền': 'Tiền', 'Tình': 'Tình', 'Thỉnh': 'Thỉnh', 'Vấn': 'Vấn', 'Khứ': 'Khứ', 'Nhượng': 'Nhượng', 'Nhiệt': 'Nhiệt',
-            'Nhận': 'Nhận', 'Thức': 'Thức', 'Chân': 'Chân', 'Nhật': 'Nhật', 'Nhục': 'Nhục', 'Tam': 'Tam', 'Sơn': 'Sơn', 'Thương': 'Thương',
-            'Ngọ': 'Ngọ', 'Thiểu': 'Thiểu', 'Thùy': 'Thùy', 'Thân': 'Thân', 'Thể': 'Thể', 'Thập': 'Thập', 'Mẹ': 'Mẹ', 'Bệnh': 'Bệnh',
-            'Âm': 'Âm', 'Thập': 'Thập', 'Hầu': 'Hầu', 'Thời': 'Thời', 'Sự': 'Sự', 'Tình': 'Tình', 'Thủ': 'Thủ', 'Biểu': 'Biểu',
-            'Thụ': 'Thụ', 'Song': 'Song', 'Thủy': 'Thủy', 'Thụy': 'Thụy', 'Thuyết': 'Thuyết', 'Tứ': 'Tứ', 'Tống': 'Tống', 'Tuổi': 'Tuổi',
-            'Tha': 'Tha', 'Tha': 'Tha', 'Thái': 'Thái', 'Khí': 'Khí', 'Đồng': 'Đòng', 'Đồ': 'Đồ', 'Quán': 'Quán', 'Vãng': 'Vãng',
-            'Đề': 'Đề', 'Ngã': 'Ngã', 'Ngũ': 'Ngũ', 'Tây': 'Tây', 'Tẩy': 'Tẩy', 'Hỷ': 'Hỷ', 'Hạ': 'Hạ', 'Hạ': 'Hạ',
-            'Tiên': 'Tiên', 'Hiện': 'Hiện', 'Tưởng': 'Tưởng', 'Tiểu': 'Tiểu', 'Tỷ': 'Tỷ', 'Hiệu': 'Hiệu', 'Kỳ': 'Kỳ', 'Tinh': 'Tinh',
-            'Tả': 'Tả', 'Tạ': 'Tạ', 'Tân': 'Tân', 'Hành': 'Hành', 'Tánh': 'Tánh', 'Hứng': 'Hứng', 'Hứa': 'Hứa', 'Nha': 'Nha',
-            'Loát': 'Loát', 'Nhãn': 'Nhãn', 'Tình': 'Tình', 'Dương': 'Dương', 'Dược': 'Dược', 'Yêu': 'Yêu', 'Dã': 'Dã', 'Diệp': 'Diệp',
-            'Nhất': 'Nhất', 'Tá': 'Tá', 'Khởi': 'Khởi', 'Định': 'Định', 'Cộng': 'Cộng', 'Dạng': 'Dạng', 'Trực': 'Trực', 'Y': 'Y',
-            'Y': 'Y', 'Phục': 'Phục', 'Ghế': 'Ghế', 'Âm': 'Âm', 'Âm': 'Âm', 'Nhạc': 'Nhạc', 'Nhân': 'Nhân', 'Vị': 'Vị',
-            'Tại': 'Tại', 'Tái': 'Tái', 'Tảo': 'Tảo', 'Chẩm': 'Chẩm', 'Dạng': 'Dạng', 'Trạm': 'Trạm', 'Trương': 'Trương', 'Thảo': 'Thảo',
-            'Giá': 'Giá', 'Trước': 'Trước', 'Chính': 'Chính', 'Tri': 'Tri', 'Trung': 'Trung', 'Trọng': 'Trọng', 'Tô': 'Tô', 'Trú': 'Trú',
-            'Chuẩn': 'Chuẩn', 'Bị': 'Bị', 'Trác': 'Trác', 'Tẩu': 'Tẩu', 'Tối': 'Tối', 'Tạc': 'Tạc', 'Tả': 'Tả', 'Tố': 'Tố',
-            'Tác': 'Tác', 'Tác': 'Tác', 'Tọa': 'Tọa', 'Tọa': 'Tọa'
+            '班': 'Ban', '半': 'Bán', '年': 'Niên', '帮': 'Bang', '忙': 'Mang', '包': 'Bao', '子': 'Tử', '杯': 'Bôi',
+            '北': 'Bắc', '边': 'Biên', '京': 'Kinh', '本': 'Bản', '比': 'Tỉ', '别': 'Biệt', 'sự': 'Sự', '人': 'Nhân',
+            '病': 'Bệnh', '不': 'Bất', '大': 'Đại', '对': 'Đối', '客': 'Khách', '气': 'Khí', '用': 'Dụng', '菜': 'Thái',
+            '茶': 'Trà', '差': 'Sai', '常': 'Thường', '唱': 'Xướng', '歌': 'Ca', '车': 'Xa', '票': 'Phiếu', '上': 'Thượng',
+            '站': 'Trạm', '吃': 'Ngật', '饭': 'Phạn', '出': 'Xuất', '来': 'Lai', '去': 'Khứ', '穿': 'Xuyên', '床': 'Sàng',
+            '次': 'Thứ', '从': 'Tòng', '错': 'Thác', '打': 'Đả', '话': 'Thoại', '开': 'Khai', '球': 'Cầu', '学': 'Học',
+            '生': 'Sinh', '到': 'Đáo', '地': 'Địa', '点': 'Điểm', '方': 'Phương', '图': 'Đồ', '得': 'Đắc', '等': 'Đẳng',
+            '弟': 'Đệ', '第': 'Đệ', '二': 'Nhị', '电': 'Điện', '脑': 'Não', '视': 'Thị', '机': 'Cơ', '影': 'Ảnh',
+            '院': 'Viện', '东': 'Đông', '西': 'Tây', '动': 'Động', '作': 'Tác', '都': 'Đô', '读': 'Độc', '书': 'Thư',
+            '饿': 'Ngạ', '儿': 'Nhi', '店': 'Điếm', '房': 'Phòng', '间': 'Gian', '放': 'Phóng', '假': 'Giả', '飞': 'Phi',
+            '非': 'Phi', '风': 'Phong', '干': 'Can', '净': 'Tịnh', '什': 'Thập', 'me': 'Ma', 'cao': 'Cao', 'hưng': 'Hưng',
+            'tố': 'Tố', 'ca': 'Ca', 'cá': 'Cá', 'cấp': 'Cấp', 'cân': 'Cân', 'công': 'Công', 'quan': 'Quan', 'quý': 'Quý',
+            'quốc': 'Quốc', 'gia': 'Gia', 'ngoại': 'Ngoại', 'quá': 'Quá', 'hoàn': 'Hoàn', 'sự': 'Sự', 'hữu': 'Hữu', 'hài': 'Hài',
+            'hán': 'Hán', 'ngữ': 'Ngữ', 'tự': 'Tự', 'ngật': 'Ngật', 'khán': 'Khán', 'thính': 'Thính', 'ngoạn': 'Ngoạn', 'hiệu': 'Hiệu',
+            'hát': 'Hát', 'hòa': 'Hòa', 'hận': 'Hận', 'hèm': 'Hèm', 'hậu': 'Hậu', 'hoa': 'Hoa', 'hoại': 'Hoại', 'hoan': 'Hoan', 'nghênh': 'Nghênh',
+            'hồi': 'Hồi', 'đáp': 'Đáp', 'hội': 'Hội', 'hỏa': 'Hỏa', 'cơ': 'Cơ', 'trường': 'Trường', 'đản': 'Đản', 'cát': 'Cát',
+            'lâm': 'Lâm', 'giáp': 'Giáp', 'kỷ': 'Kỷ', 'li': 'Li', 'kiến': 'Kiến', 'diện': 'Diện', 'giang': 'Giang', 'giáo': 'Giáo',
+            'khiếu': 'Khiếu', 'tỷ': 'Tỷ', 'giới': 'Giới', 'sao': 'Sao', 'kim': 'Kim', 'tiến': 'Tiến', 'cửu': 'Cửu', 'tựu': 'Tựu',
+            'giác': 'Giác', 'ngoạn': 'Ngoạn', 'xo': 'Xo', 'khảo': 'Khảo', 'thi': 'Thí', 'khát': 'Khát', 'khóa': 'Khóa', 'khẩu': 'Khẩu',
+            'khối': 'Khối', 'khoái': 'Khoái', 'lạc': 'Lạc', 'lão': 'Lão', 'sư': 'Sư', 'liễu': 'Liễu', 'lụy': 'Lụy', 'lãnh': 'Lãnh',
+            'lưỡng': 'Lưỡng', 'linh': 'Linh', 'lục': 'Lục', 'lộ': 'Lộ', 'lục': 'Lục', 'ma': 'Ma', 'mã': 'Mã', 'mãi': 'Mãi',
+            'mại': 'Mại', 'mạn': 'Mạn', 'mang': 'Mang', 'ma': 'Ma', 'một': 'Một', 'hệ': 'Hệ', 'hữu': 'Hữu', 'muội': 'Muội',
+            'môn': 'Môn', 'mễ': 'Mễ', 'diện': 'Diện', 'điều': 'Điều', 'danh': 'Danh', 'minh': 'Minh', 'nã': 'Nã', 'nả': 'Nả',
+            'na': 'Na', 'nãi': 'Nãi', 'nam': 'Nam', 'nam': 'Nam', 'ni': 'Ni', 'năng': 'Năng', 'nhĩ': 'Nhĩ', 'nẫm': 'Nẫm',
+            'điểu': 'Điểu', 'ngưu': 'Ngưu', 'nữ': 'Nữ', 'bàng': 'Bàng', 'bàn': 'Bàn', 'tảo': 'Tảo', 'bộ': 'Bộ', 'bằng': 'Bằng',
+            'hữu': 'Hữu', 'tiện': 'Tiện', 'nghi': 'Nghi', 'phiếu': 'Phiếu', 'bình': 'Bình', 'quả': 'Quả', 'thất': 'Thất', 'tiền': 'Tiền',
+            'tiền': 'Tiền', 'tình': 'Tình', 'thỉnh': 'Thỉnh', 'vấn': 'Vấn', 'khứ': 'Khứ', 'nhượng': 'Nhượng', 'nhiệt': 'Nhiệt',
+            'nhận': 'Nhận', 'thức': 'Thức', 'chân': 'Chân', 'nhật': 'Nhật', 'nhục': 'Nhục', 'tam': 'Tam', 'sơn': 'Sơn', 'thương': 'Thương',
+            'ngọ': 'Ngọ', 'thiểu': 'Thiểu', 'thùy': 'Thùy', 'thân': 'Thân', 'thể': 'Thể', 'thập': 'Thập', 'mẹ': 'Mẹ', 'bệnh': 'Bệnh',
+            'âm': 'Âm', 'thập': 'Thập', 'hầu': 'Hầu', 'thời': 'Thời', 'sự': 'Sự', 'tình': 'Tình', 'thủ': 'Thủ', 'biểu': 'Biểu',
+            'thụ': 'Thụ', 'song': 'Song', 'thủy': 'Thủy', 'thụy': 'Thụy', 'thuyết': 'Thuyết', 'tứ': 'Tứ', 'tống': 'Tống', 'tuổi': 'Tuổi',
+            'tha': 'Tha', 'tha': 'Tha', 'thái': 'Thái', 'khí': 'Khí', 'đồng': 'Đòng', 'đồ': 'Đồ', 'quán': 'Quán', 'vãng': 'Vãng',
+            'đề': 'Đề', 'ngã': 'Ngã', 'ngũ': 'Ngũ', 'tây': 'Tây', 'tẩy': 'Tẩy', 'hỷ': 'Hỷ', 'hạ': 'Hạ', 'hạ': 'Hạ',
+            'tiên': 'Tiên', 'hiện': 'Hiện', 'tưởng': 'Tưởng', 'tiểu': 'Tiểu', 'tỷ': 'Tỷ', 'hiệu': 'Hiệu', 'kỳ': 'Kỳ', 'tinh': 'Tinh',
+            'tả': 'Tả', 'tạ': 'Tạ', 'tân': 'Tân', 'hành': 'Hành', 'tánh': 'Tánh', 'hứng': 'Hứng', 'hứa': 'Hứa', 'nha': 'Nha',
+            'loát': 'Loát', 'nhãn': 'Nhãn', 'tình': 'Tình', 'dương': 'Dương', 'dược': 'Dược', 'yêu': 'Yêu', 'dã': 'Dã', 'diệp': 'Diệp',
+            'nhất': 'Nhất', 'tá': 'Tá', 'khởi': 'Khởi', 'định': 'Định', 'cộng': 'Cộng', 'dạng': 'Dạng', 'trực': 'Trực', 'y': 'Y',
+            'y': 'Y', 'phục': 'Phục', 'ghế': 'Ghế', 'âm': 'Âm', 'âm': 'Âm', 'nhạc': 'Nhạc', 'nhân': 'Nhân', 'vị': 'Vị',
+            'tại': 'Tại', 'tái': 'Tái', 'tảo': 'Tảo', 'chẩm': 'Chẩm', 'dạng': 'Dạng', 'trạm': 'Trạm', 'trương': 'Trương', 'thảo': 'Thảo',
+            'giá': 'Giá', 'trước': 'Trước', 'chính': 'Chính', 'tri': 'Tri', 'trung': 'Trung', 'trọng': 'Trọng', 'tô': 'Tô', 'trú': 'Trú',
+            'chuẩn': 'Chuẩn', 'bị': 'Bị', 'trác': 'Trác', 'tẩu': 'Tẩu', 'tối': 'Tối', 'tạc': 'Tạc', 'tả': 'Tả', 'tố': 'Tố',
+            'tác': 'Tác', 'tác': 'Tác', 'tọa': 'Tọa', 'tọa': 'Tọa'
         };
 
         function getSinoVietnameseCharFallback(c) {
@@ -1017,8 +1017,9 @@
             const btnPipToggle = document.getElementById('btn-pip-toggle');
             if (btnPipToggle) {
                 btnPipToggle.addEventListener('click', () => {
-                    // Try always on top PiP popup first regardless of protocol, fallback to window.open if blocked
-                    if ('documentPictureInPicture' in window) {
+                    // ALWAYS use openStandardPopup when running on local file system (file://)
+                    // browser security blocks local clip-paths inside Document PiP (about:blank)
+                    if ('documentPictureInPicture' in window && window.location.protocol !== 'file:') {
                         openAlwaysOnTopPopup();
                     } else {
                         openStandardPopup();
@@ -1280,7 +1281,6 @@
             }
         }
 
-        // Show Error wrapper
         function showError(msg) {
             errorModalMsg.textContent = msg;
             errorModal.classList.remove('hidden');
@@ -1902,10 +1902,9 @@
 
                 pipWindow = await window.documentPictureInPicture.requestWindow({
                     width: 500,
-                    height: 750
+                    height: 750 // Increased default height to 750px (approx. 1/8 longer than 660px)
                 });
 
-                // Copy all stylesheet link/styles to the always-on-top window
                 [...document.styleSheets].forEach((styleSheet) => {
                     try {
                         const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
@@ -1920,6 +1919,39 @@
                     }
                 });
 
+                // Custom PiP styles
+                const customStyle = document.createElement('style');
+                customStyle.textContent = `
+                    body {
+                        background-color: #fafaf9;
+                        background-image: radial-gradient(#e5e5e0 1px, transparent 1px) !important;
+                        background-size: 16px 16px !important;
+                        font-family: inherit;
+                        padding: 12px !important;
+                        margin: 0 !important;
+                        height: 100vh !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+                    .rounded-3xl {
+                        border-radius: 1.5rem !important;
+                        border-width: 1px !important;
+                        background-color: rgba(252, 250, 242, 0.9) !important;
+                        backdrop-filter: blur(4px) !important;
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        padding: 24px !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        gap: 16px !important;
+                    }
+                `;
+                pipWindow.document.head.appendChild(customStyle);
+
                 const playerContainer = document.querySelector('#tab-slideshow-view > section.lg\\:col-span-8 > div.rounded-3xl');
                 const placeholder = document.createElement('div');
                 placeholder.id = 'pip-placeholder';
@@ -1932,20 +1964,7 @@
                     topBar.style.display = 'none';
                 }
 
-                // Construct a mock hierarchy inside PiP document so the standard popup CSS rules apply perfectly
-                const mockMain = pipWindow.document.createElement('main');
-                const mockTabView = pipWindow.document.createElement('div');
-                mockTabView.id = 'tab-slideshow-view';
-                const mockSection = pipWindow.document.createElement('section');
-                mockSection.className = 'lg:col-span-8';
-                
-                mockSection.appendChild(playerContainer);
-                mockTabView.appendChild(mockSection);
-                mockMain.appendChild(mockTabView);
-                pipWindow.document.body.appendChild(mockMain);
-                
-                // Add popup-mode class to body to trigger always-on-top layout rules
-                pipWindow.document.body.classList.add('popup-mode');
+                pipWindow.document.body.appendChild(playerContainer);
 
                 pipWindow.addEventListener('pagehide', () => {
                     if (topBar) {
@@ -1963,7 +1982,7 @@
 
         function openStandardPopup() {
             const width = 500;
-            const height = 750;
+            const height = 750; // Increased default height to 750px (approx. 1/8 longer than 660px)
             const left = (screen.width - width) / 2;
             const top = (screen.height - height) / 2;
             
